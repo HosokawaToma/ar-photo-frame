@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import NextjsImage from 'next/image';
 import style from '../styles/captureImageSave.module.css';
-import '../styles/reset.css';
 
 const CaptureImageSavePage = () => {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);

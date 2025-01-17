@@ -5,7 +5,6 @@ import Webcam from 'react-webcam';
 import { useRouter } from 'next/router';
 import NextjsImage from 'next/image';
 import style from '../styles/camera.module.css';
-import '../styles/reset.css'
 
 interface CameraProps {
   captureImageSavePage: string;
