@@ -7,6 +7,11 @@
   height: auto;
 }
 
+.image {
+  position: absolute;
+  z-index: 1;
+}
+
 .button{
   width: 100px;
   height: 50px;
@@ -14,4 +19,5 @@
   top: 90%;
   left: 50%;
   transform: translate(-50%, 0);
+  z-index: 2;
 }
