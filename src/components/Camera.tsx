@@ -52,6 +52,7 @@ const Camera = ({ captureImageSavePage }: CameraProps) => {
   }, []);
 
   const captureImage = async () => {
+    alert('クリック出来ています！')
     if (!webcamRef.current) {
       return;
     }
@@ -115,9 +116,9 @@ const Camera = ({ captureImageSavePage }: CameraProps) => {
         objectFit="contain"
         className={style.image}
       />
-      <button onClick={captureImage} className={style.button}>
+      <a onClick={captureImage} className={style.button}>
         Capture Image
-      </button>
+      </a>
     </div>
   );
 };
