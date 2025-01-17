@@ -52,8 +52,8 @@ const Camera = ({ captureImageSavePage }: CameraProps) => {
   }, []);
 
   const captureImage = async () => {
-    alert('クリック出来ています！')
     if (!webcamRef.current) {
+      alert('webカメラを扱うことが出来ません！')
       return;
     }
 
@@ -63,12 +63,14 @@ const Camera = ({ captureImageSavePage }: CameraProps) => {
     });
 
     if (!base64captureImage) {
+      alert('撮影が出来ません！')
       return;
     }
 
     const captureImageCanvas = document.createElement('canvas');
     const captureImageContext = captureImageCanvas.getContext('2d');
     if (!captureImageContext) {
+      alert('キャンバスを作成できません！')
       return;
     }
 
