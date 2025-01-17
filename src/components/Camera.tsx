@@ -11,12 +11,14 @@ interface CameraProps {
 }
 
 const Camera = ({ captureImageSavePage }: CameraProps) => {
-  const [videoConstraints, setVideoConstraints] = useState<MediaTrackConstraints | undefined>(undefined);
   const webcamRef = useRef<Webcam>(null);
   const router = useRouter();
-  const overlyImagePath = '/logo.png'; // オーバーレイ画像のパス
-  const [overlyImageWidth, setOverlyImageWidth] = useState<number>(0);
-  const [overlyImageHeight, setOverlyImageHeight] = useState<number>(0);
+  const overlyImagePath = '/logo.png';
+  const overlyImageWidth = 1000;
+  const overlyImageHeight = 164;
+  const [webCameraWidth, setWebCameraWidth] = useState<number>(0);
+  const [webCameraHeight, setWebCameraHeight] = useState<number>(0);
+  const [webCameraId, setWebCameraId] = useState<string>('');
 
   useEffect(() => {
     const getMaxResolution = async () => {
@@ -33,46 +35,36 @@ const Camera = ({ captureImageSavePage }: CameraProps) => {
             },
           };
 
-          // 一時的にストリームを取得して最大解像度を取得
           const stream = await navigator.mediaDevices.getUserMedia(constraints);
           const videoTrack = stream.getVideoTracks()[0];
           const capabilities = videoTrack.getCapabilities();
+          setWebCameraWidth(capabilities.width?.max || 1280);
+          setWebCameraHeight(capabilities.height?.max || 720);
+          setWebCameraId(videoInputDevices[0].deviceId);
 
-          const maxWidth = capabilities.width?.max || 1280;
-          const maxHeight = capabilities.height?.max || 720;
-
-          setVideoConstraints({
-            width: maxWidth,
-            height: maxHeight,
-            deviceId: videoInputDevices[0].deviceId,
-          });
-
-          // ストリームを停止
           videoTrack.stop();
         }
       } catch (error) {
         console.error("カメラの最大解像度取得エラー:", error);
       }
     };
-
     getMaxResolution();
   }, []);
-
-  const handleImageLoad = (imageElement: HTMLImageElement) => {
-    setOverlyImageWidth(imageElement.width);
-    setOverlyImageHeight(imageElement.height);
-  };
 
   const captureImage = async () => {
     if (!webcamRef.current) {
       return;
     }
-    const base64captureImage = webcamRef.current.getScreenshot();
+
+    const base64captureImage = webcamRef.current.getScreenshot({
+      width: webCameraWidth,
+      height: webCameraHeight
+    });
+
     if (!base64captureImage) {
       return;
     }
 
-    // Canvasを作成し、撮影した画像とオーバーレイ画像を合成
     const captureImageCanvas = document.createElement('canvas');
     const captureImageContext = captureImageCanvas.getContext('2d');
     if (!captureImageContext) {
@@ -87,17 +79,16 @@ const Camera = ({ captureImageSavePage }: CameraProps) => {
       captureImageCanvas.height = captureImage.height;
       captureImageContext.drawImage(captureImage, 0, 0);
 
-      // オーバーレイ画像を追加
       const overlyImage = new Image();
       overlyImage.src = overlyImagePath;
 
       overlyImage.onload = () => {
         captureImageContext.drawImage(
           overlyImage,
-          (captureImage.width - overlyImageWidth) / 2,
-          (captureImage.height - overlyImageHeight) / 2,
-          overlyImageWidth,
-          overlyImageHeight
+          0,
+          (webCameraHeight - webCameraWidth / overlyImageWidth * overlyImageHeight) / 2,
+          webCameraWidth,
+          webCameraWidth / overlyImageWidth * overlyImageHeight
         );
 
         const finalBase64captureImage = captureImageCanvas.toDataURL("image/png");
@@ -113,18 +104,16 @@ const Camera = ({ captureImageSavePage }: CameraProps) => {
         audio={false}
         ref={webcamRef}
         screenshotFormat="image/png"
-        videoConstraints={videoConstraints}
+        videoConstraints={{width: webCameraWidth, height: webCameraHeight, deviceId: webCameraId}}
         screenshotQuality={1}
         className={style.camera}
       />
       <NextjsImage
         src={overlyImagePath}
         alt="overlyImage"
-        width={1000}
-        height={164}
+        layout='fill'
         objectFit="contain"
         className={style.image}
-        onLoadingComplete={handleImageLoad}
       />
       <button onClick={captureImage} className={style.button}>
         Capture Image
