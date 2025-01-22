@@ -74,37 +74,8 @@ const ArPhotoFrameCamera = ({ arPhotoFrameImagePage }: ArPhotoFrameCameraProps) 
       return;
     }
 
-    const captureImageCanvas = document.createElement('canvas');
-    const captureImageContext = captureImageCanvas.getContext('2d');
-    if (!captureImageContext) {
-      return;
-    }
-
-    const captureImage = new Image();
-    captureImage.src = base64captureImage;
-
-    captureImage.onload = () => {
-      captureImageCanvas.width = captureImage.width;
-      captureImageCanvas.height = captureImage.height;
-      captureImageContext.drawImage(captureImage, 0, 0);
-
-      const overlyImage = new Image();
-      overlyImage.src = overlyImagePath;
-
-      overlyImage.onload = () => {
-        captureImageContext.drawImage(
-          overlyImage,
-          0,
-          0,
-          webCameraWidth,
-          webCameraHeight
-        );
-
-        const finalBase64captureImage = captureImageCanvas.toDataURL("image/png");
-        sessionStorage.setItem("base64captureImage", finalBase64captureImage);
-        router.push(arPhotoFrameImagePage);
-      };
-    };
+    sessionStorage.setItem("base64captureImage", base64captureImage);
+    router.push(arPhotoFrameImagePage);
   };
 
   return (
