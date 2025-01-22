@@ -1,9 +1,9 @@
 "use client";
 
-import Camera from '../components/Camera';
+import Camera from '../components/ArPhotoFrameCamera';
 
 const Index = () => {
-  return <Camera captureImageSavePage='/captureImageSave'/>;
+  return <Camera arPhotoFrameImagePage='/captureImageSave'/>;
 };
 
 export default Index;

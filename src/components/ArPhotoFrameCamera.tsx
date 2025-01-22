@@ -4,18 +4,17 @@ import { useState, useEffect, useRef } from 'react';
 import Webcam from 'react-webcam';
 import { useRouter } from 'next/router';
 import NextjsImage from 'next/image';
-import style from '../styles/camera.module.css';
+import style from '../styles/arPhotoFrameCamera.module.css';
 
-interface CameraProps {
-  captureImageSavePage: string;
+interface ArPhotoFrameCameraProps {
+  arPhotoFrameImagePage: string;
 }
 
-const Camera = ({ captureImageSavePage }: CameraProps) => {
+const ArPhotoFrameCamera = ({ arPhotoFrameImagePage }: ArPhotoFrameCameraProps) => {
   const webcamRef = useRef<Webcam>(null);
   const router = useRouter();
-  const overlyImagePath = '/logo.png';
-  const overlyImageWidth = 1000;
-  const overlyImageHeight = 164;
+  const overlyImagePath = '/6144x8192.png';
+  const cameraAspectRatio = 4/3;
   const [webCameraWidth, setWebCameraWidth] = useState<number>(0);
   const [webCameraHeight, setWebCameraHeight] = useState<number>(0);
   const [webCameraId, setWebCameraId] = useState<string>('');
@@ -38,9 +37,19 @@ const Camera = ({ captureImageSavePage }: CameraProps) => {
           const stream = await navigator.mediaDevices.getUserMedia(constraints);
           const videoTrack = stream.getVideoTracks()[0];
           const capabilities = videoTrack.getCapabilities();
-          setWebCameraWidth(capabilities.width?.max || 1280);
-          setWebCameraHeight(capabilities.height?.max || 720);
+          let width = capabilities.width?.max || 1280;
+          let height = capabilities.height?.max || 720;
+          if (width / height > cameraAspectRatio) {
+            // 幅が広すぎる場合、高さに合わせて幅を調整
+            width = (height * 3) / 4;
+          } else {
+            // 高さが高すぎる場合、幅に合わせて高さを調整
+            height = (width * 4) / 3;
+          }
+          setWebCameraWidth(width);
+          setWebCameraHeight(height);
           setWebCameraId(videoInputDevices[0].deviceId);
+          console.log(width, height)
 
           videoTrack.stop();
         }
@@ -86,14 +95,14 @@ const Camera = ({ captureImageSavePage }: CameraProps) => {
         captureImageContext.drawImage(
           overlyImage,
           0,
-          (webCameraHeight - webCameraWidth / overlyImageWidth * overlyImageHeight) / 2,
+          0,
           webCameraWidth,
-          webCameraWidth / overlyImageWidth * overlyImageHeight
+          webCameraHeight
         );
 
         const finalBase64captureImage = captureImageCanvas.toDataURL("image/png");
         sessionStorage.setItem("base64captureImage", finalBase64captureImage);
-        router.push(captureImageSavePage);
+        router.push(arPhotoFrameImagePage);
       };
     };
   };
@@ -111,8 +120,8 @@ const Camera = ({ captureImageSavePage }: CameraProps) => {
       <NextjsImage
         src={overlyImagePath}
         alt="overlyImage"
-        layout='fill'
-        objectFit="contain"
+        layout={"fill"}
+        objectFit={"contain"}
         className={style.image}
       />
       <a onClick={captureImage} className={style.button}>
@@ -122,4 +131,4 @@ const Camera = ({ captureImageSavePage }: CameraProps) => {
   );
 };
 
-export default Camera;
+export default ArPhotoFrameCamera;
