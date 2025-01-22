@@ -3,7 +3,7 @@
 import Camera from '../components/ArPhotoFrameCamera';
 
 const Index = () => {
-  return <Camera arPhotoFrameImagePage='/captureImageSave'/>;
+  return <Camera arPhotoFrameImagePage='/imageSave'/>;
 };
 
 export default Index;
