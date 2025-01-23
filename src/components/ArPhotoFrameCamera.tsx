@@ -29,8 +29,8 @@ const ArPhotoFrameCamera = ({ arPhotoFrameImagePage }: ArPhotoFrameCameraProps) 
           const constraints = {
             video: {
               deviceId: videoInputDevices[0].deviceId,
-              width: { ideal: 4096 },
-              height: { ideal: 2160 },
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
             },
           };
 
@@ -40,10 +40,8 @@ const ArPhotoFrameCamera = ({ arPhotoFrameImagePage }: ArPhotoFrameCameraProps) 
           let width = capabilities.width?.max || 1280;
           let height = capabilities.height?.max || 720;
           if (width / height > cameraAspectRatio) {
-            // 幅が広すぎる場合、高さに合わせて幅を調整
             width = (height * 3) / 4;
           } else {
-            // 高さが高すぎる場合、幅に合わせて高さを調整
             height = (width * 4) / 3;
           }
           setWebCameraWidth(width);
@@ -58,7 +56,7 @@ const ArPhotoFrameCamera = ({ arPhotoFrameImagePage }: ArPhotoFrameCameraProps) 
       }
     };
     getMaxResolution();
-  }, []);
+  });
 
   const captureImage = async () => {
     if (!webcamRef.current) {
@@ -95,9 +93,9 @@ const ArPhotoFrameCamera = ({ arPhotoFrameImagePage }: ArPhotoFrameCameraProps) 
         objectFit={"contain"}
         className={style.image}
       />
-      <a onClick={captureImage} className={style.button}>
+      <button onClick={captureImage} className={style.button}>
         Capture Image
-      </a>
+      </button>
     </div>
   );
 };
