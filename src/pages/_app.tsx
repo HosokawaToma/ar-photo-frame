@@ -1,8 +1,13 @@
 import '../styles/reset.css';
 import { AppProps } from 'next/app';
+import { ArPhotoFrameProvider } from '@/contexts/ArPhotoFrameContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <ArPhotoFrameProvider>
+      <Component {...pageProps} />
+    </ArPhotoFrameProvider>
+  );
 }
 
 export default MyApp;

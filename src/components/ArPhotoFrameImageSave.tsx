@@ -1,10 +1,12 @@
 "use client";
 
-import { Dispatch, MouseEventHandler, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, MouseEventHandler, SetStateAction, useState, useEffect, useContext } from "react";
 import NextjsImage from "next/image";
-import style from "../styles/captureImageSave.module.css";
+import style from "@/styles/captureImageSave.module.css";
+import { ArPhotoFrameContext } from '@/contexts/ArPhotoFrameContext';
 
 interface ImageProcessorProps {
+  capturedImage: string | null,
   overlayImagePath: string,
   onProcessed: Dispatch<SetStateAction<string | null>>
 }
@@ -14,10 +16,9 @@ interface ImageDisplayProps {
   onDownload: MouseEventHandler<HTMLButtonElement>
 }
 
-const ImageProcessor = ({ overlayImagePath, onProcessed }: ImageProcessorProps) => {
+const ImageProcessor = ({ capturedImage, overlayImagePath, onProcessed }: ImageProcessorProps) => {
   useEffect(() => {
-    const base64captureImage = sessionStorage.getItem("base64captureImage");
-    if (!base64captureImage) {
+    if (!capturedImage) {
       return;
     }
 
@@ -28,7 +29,7 @@ const ImageProcessor = ({ overlayImagePath, onProcessed }: ImageProcessorProps) 
     }
 
     const captureImage = new Image();
-    captureImage.src = base64captureImage;
+    captureImage.src = capturedImage;
     captureImage.onload = () => {
       captureImageCanvas.width = captureImage.width;
       captureImageCanvas.height = captureImage.height;
@@ -49,46 +50,49 @@ const ImageProcessor = ({ overlayImagePath, onProcessed }: ImageProcessorProps) 
         onProcessed(finalBase64captureImage);
       };
     };
-  }, [overlayImagePath, onProcessed]);
+  }, [capturedImage, overlayImagePath, onProcessed]);
 
   return null;
 };
 
 const ImageDisplay = ({ capturedImage, onDownload }: ImageDisplayProps) => (
-  <div>
+  <div className={style.container}>
     {capturedImage ? (
       <NextjsImage
         src={capturedImage}
         alt="Captured"
-        width={1000}
-        height={100}
+        layout={"fill"}
         className={style.image}
       />
     ) : (
       <p>No image captured</p>
     )}
-    <button onClick={onDownload}>ダウンロード</button>
+    <button onClick={onDownload} className={style.button}>ダウンロード</button>
   </div>
 );
 
 const ArPhotoFrameImageSavePage = () => {
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const overlayImagePath = "/6144x8192.png";
+  const [arPhotoFrameImage, setArPhotoFrameImage] = useState<string | null>(null);
+  const context = useContext(ArPhotoFrameContext);
+  if (!context) {
+    throw new Error('Context must be used within a Provider');
+  }
+  const { capturedImage, overlayImagePath } = context;
 
   const handleDownload = () => {
-    if (!capturedImage) {
+    if (!arPhotoFrameImage) {
       return;
     }
     const link = document.createElement("a");
-    link.href = capturedImage;
-    link.download = "capturedImage.png";
+    link.href = arPhotoFrameImage;
+    link.download = "arPhotoFrameImage.png";
     link.click();
   };
 
   return (
     <div>
-      <ImageProcessor overlayImagePath={overlayImagePath} onProcessed={setCapturedImage} />
-      <ImageDisplay capturedImage={capturedImage} onDownload={handleDownload} />
+      <ImageProcessor capturedImage = {capturedImage} overlayImagePath={overlayImagePath} onProcessed={setArPhotoFrameImage} />
+      <ImageDisplay capturedImage={arPhotoFrameImage} onDownload={handleDownload} />
     </div>
   );
 };
