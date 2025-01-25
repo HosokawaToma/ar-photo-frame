@@ -61,6 +61,18 @@ const ImageDisplay = ({ arPhotoFrameImageCanvasRef, onDownload }: ImageDisplayPr
   </div>
 );
 
+function generateRandomString(length: number): string {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let result = '';
+
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  return result;
+}
+
 const ArPhotoFrameImageSavePage = () => {
   const arPhotoFrameImageCanvasRef = useRef<HTMLCanvasElement>(null);
   const context = useContext(ArPhotoFrameContext);
@@ -83,12 +95,10 @@ const ArPhotoFrameImageSavePage = () => {
       }
       const url = URL.createObjectURL(blob);
       link.href = url;
-      link.download = "arPhotoFrameImage.png";
+      link.download = generateRandomString(16) + ".png";
       link.click();
       URL.revokeObjectURL(url);
     });
-    link.download = "arPhotoFrameImage.png";
-    link.click();
   };
 
   return (
