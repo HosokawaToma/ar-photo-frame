@@ -18,7 +18,7 @@ const ArPhotoFrameCamera = ({ arPhotoFrameImagePage }: ArPhotoFrameCameraProps) 
   if (!context) {
     throw new Error('Context must be used within a Provider');
   }
-  const { setCapturedImage, overlayImagePath } = context;
+  const { setCapturedImageCanvas, setOverlayImage } = context;
 
   const videoConstraints: MediaTrackConstraints = {
     width: { ideal: 6144 },
@@ -28,13 +28,17 @@ const ArPhotoFrameCamera = ({ arPhotoFrameImagePage }: ArPhotoFrameCameraProps) 
   }
 
   const captureImage = useCallback(() => {
-    const imageSrc = webcamRef.current?.getScreenshot();
+    const imageSrc = webcamRef.current?.getCanvas();
     if(!imageSrc) {
       return;
     }
-    setCapturedImage(imageSrc);
+    setCapturedImageCanvas(imageSrc);
     router.push(arPhotoFrameImagePage);
-  }, [webcamRef, setCapturedImage, router, arPhotoFrameImagePage]);
+  }, [webcamRef, setCapturedImageCanvas, router, arPhotoFrameImagePage]);
+
+  const handleImageLoad = (image: HTMLImageElement) => {
+    setOverlayImage(image);
+  };
 
   return (
     <div className={style.container}>
@@ -47,10 +51,11 @@ const ArPhotoFrameCamera = ({ arPhotoFrameImagePage }: ArPhotoFrameCameraProps) 
         className={style.camera}
       />
       <NextjsImage
-        src={overlayImagePath}
+        src={'/6144x8192.png'}
         alt="overlyImage"
         layout={"fill"}
         className={style.image}
+        onLoadingComplete={handleImageLoad}
       />
       <button onClick={captureImage} className={style.button}>
         Capture Image

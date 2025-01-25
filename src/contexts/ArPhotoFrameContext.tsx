@@ -1,9 +1,10 @@
 import React, { createContext, useState, ReactNode } from 'react';
 
 export type ArPhotoFrameContextType = {
-  capturedImage: string | null,
-  setCapturedImage: React.Dispatch<React.SetStateAction<string | null>>
-  overlayImagePath: string,
+  capturedImageCanvas: HTMLCanvasElement | null,
+  setCapturedImageCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | null>>
+  overlayImage: HTMLImageElement | null,
+  setOverlayImage: React.Dispatch<React.SetStateAction<HTMLImageElement | null>>
 };
 
 export const ArPhotoFrameContext = createContext<ArPhotoFrameContextType | undefined>(undefined);
@@ -13,16 +14,17 @@ type ArPhotoFrameProviderProps = {
 };
 
 export const ArPhotoFrameProvider: React.FC<ArPhotoFrameProviderProps> = ({ children }) => {
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const overlayImagePath = '/6144x8192.png';
+  const [capturedImageCanvas, setCapturedImageCanvas] = useState<HTMLCanvasElement | null>(null);
+  const [overlayImage, setOverlayImage] = useState<HTMLImageElement | null>(null);
 
   return (
     <ArPhotoFrameContext.Provider
     value={
       {
-        capturedImage,
-        setCapturedImage,
-        overlayImagePath,
+        capturedImageCanvas,
+        setCapturedImageCanvas,
+        overlayImage,
+        setOverlayImage
       }
     }>
       {children}

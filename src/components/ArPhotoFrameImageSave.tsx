@@ -1,69 +1,59 @@
 "use client";
 
-import { Dispatch, MouseEventHandler, SetStateAction, useState, useEffect, useContext } from "react";
-import NextjsImage from "next/image";
+import { MouseEventHandler, useRef, useEffect, useContext, RefObject } from "react";
 import style from "@/styles/captureImageSave.module.css";
 import { ArPhotoFrameContext } from '@/contexts/ArPhotoFrameContext';
 
 interface ImageProcessorProps {
-  capturedImage: string | null,
-  overlayImagePath: string,
-  onProcessed: Dispatch<SetStateAction<string | null>>
+  capturedImageCanvas: HTMLCanvasElement | null,
+  overlayImage: HTMLImageElement | null,
+  arPhotoFrameImageCanvasRef: RefObject<HTMLCanvasElement | null>
 }
 
 interface ImageDisplayProps {
-  capturedImage: string | null,
+  arPhotoFrameImageCanvasRef: RefObject<HTMLCanvasElement | null>,
   onDownload: MouseEventHandler<HTMLButtonElement>
 }
 
-const ImageProcessor = ({ capturedImage, overlayImagePath, onProcessed }: ImageProcessorProps) => {
+const ImageProcessor = ({ capturedImageCanvas, overlayImage, arPhotoFrameImageCanvasRef }: ImageProcessorProps) => {
   useEffect(() => {
-    if (!capturedImage) {
+    if (!capturedImageCanvas || !overlayImage || !arPhotoFrameImageCanvasRef) {
+      alert('!capturedImageCanvas || !overlayImage || !arPhotoFrameImageCanvasRef')
       return;
     }
-
-    const captureImageCanvas = document.createElement("canvas");
-    const captureImageContext = captureImageCanvas.getContext("2d");
-    if (!captureImageContext) {
+    const capturedImageCanvasContext = capturedImageCanvas.getContext('2d');
+    const arPhotoFrameImageCanvasContext = arPhotoFrameImageCanvasRef.current?.getContext('2d');
+    if (!capturedImageCanvasContext || !arPhotoFrameImageCanvasContext) {
+      alert('!capturedImageCanvasContext || !arPhotoFrameImageCanvasContext')
       return;
     }
-
-    const captureImage = new Image();
-    captureImage.src = capturedImage;
-    captureImage.onload = () => {
-      captureImageCanvas.width = captureImage.width;
-      captureImageCanvas.height = captureImage.height;
-      captureImageContext.drawImage(captureImage, 0, 0);
-
-      const overlayImage = new Image();
-      overlayImage.src = overlayImagePath;
-      overlayImage.onload = () => {
-        captureImageContext.drawImage(
-          overlayImage,
-          0,
-          0,
-          captureImage.width,
-          captureImage.height
-        );
-
-        const finalBase64captureImage = captureImageCanvas.toDataURL("image/png");
-        onProcessed(finalBase64captureImage);
-      };
-    };
-  }, [capturedImage, overlayImagePath, onProcessed]);
-
+    capturedImageCanvasContext.drawImage(
+      overlayImage,
+      0,
+      0,
+      capturedImageCanvas.width,
+      capturedImageCanvas.height
+    );
+    if (!arPhotoFrameImageCanvasRef.current) {
+      return;
+    }
+    arPhotoFrameImageCanvasRef.current.width = capturedImageCanvas.width;
+    arPhotoFrameImageCanvasRef.current.height = capturedImageCanvas.height;
+    arPhotoFrameImageCanvasContext.clearRect(0, 0, capturedImageCanvas.width, capturedImageCanvas.height)
+    arPhotoFrameImageCanvasContext.drawImage(capturedImageCanvas, 0, 0)
+  }, []);
   return null;
 };
 
-const ImageDisplay = ({ capturedImage, onDownload }: ImageDisplayProps) => (
+const ImageDisplay = ({ arPhotoFrameImageCanvasRef, onDownload }: ImageDisplayProps) => (
   <div className={style.container}>
-    {capturedImage ? (
-      <NextjsImage
-        src={capturedImage}
-        alt="Captured"
-        layout={"fill"}
-        className={style.image}
-      />
+    {arPhotoFrameImageCanvasRef ? (
+      <canvas
+        ref={arPhotoFrameImageCanvasRef}
+        width={arPhotoFrameImageCanvasRef.current?.width}
+        height={arPhotoFrameImageCanvasRef.current?.height}
+        className={style.canvas}
+      ></canvas>
     ) : (
       <p>No image captured</p>
     )}
@@ -72,27 +62,39 @@ const ImageDisplay = ({ capturedImage, onDownload }: ImageDisplayProps) => (
 );
 
 const ArPhotoFrameImageSavePage = () => {
-  const [arPhotoFrameImage, setArPhotoFrameImage] = useState<string | null>(null);
+  const arPhotoFrameImageCanvasRef = useRef<HTMLCanvasElement>(null);
   const context = useContext(ArPhotoFrameContext);
   if (!context) {
     throw new Error('Context must be used within a Provider');
   }
-  const { capturedImage, overlayImagePath } = context;
+  const { capturedImageCanvas, overlayImage } = context;
 
-  const handleDownload = () => {
-    if (!arPhotoFrameImage) {
+  const handleDownload = async () => {
+    if (!arPhotoFrameImageCanvasRef) {
+      return;
+    }
+    if (!arPhotoFrameImageCanvasRef.current){
       return;
     }
     const link = document.createElement("a");
-    link.href = arPhotoFrameImage;
+    arPhotoFrameImageCanvasRef.current.toBlob((blob) => {
+      if (!blob) {
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      link.download = "arPhotoFrameImage.png";
+      link.click();
+      URL.revokeObjectURL(url);
+    });
     link.download = "arPhotoFrameImage.png";
     link.click();
   };
 
   return (
     <div>
-      <ImageProcessor capturedImage = {capturedImage} overlayImagePath={overlayImagePath} onProcessed={setArPhotoFrameImage} />
-      <ImageDisplay capturedImage={arPhotoFrameImage} onDownload={handleDownload} />
+      <ImageProcessor capturedImageCanvas = {capturedImageCanvas} overlayImage={overlayImage} arPhotoFrameImageCanvasRef={arPhotoFrameImageCanvasRef} />
+      <ImageDisplay arPhotoFrameImageCanvasRef={arPhotoFrameImageCanvasRef} onDownload={handleDownload} />
     </div>
   );
 };
