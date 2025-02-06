@@ -1,11 +1,11 @@
 "use client";
 
-import { useContext, useRef, useCallback } from 'react';
-import Webcam from 'react-webcam';
-import { useRouter } from 'next/router';
-import NextjsImage from 'next/image';
-import style from '@/styles/arPhotoFrameCamera.module.css';
-import { ArPhotoFrameContext } from '@/contexts/ArPhotoFrameContext';
+import { useContext, useRef, useCallback, useEffect } from "react";
+import Webcam from "react-webcam";
+import "gifler";
+import { useRouter } from "next/router";
+import style from "@/styles/arPhotoFrameCamera.module.css";
+import { ArPhotoFrameContext } from "@/contexts/ArPhotoFrameContext";
 
 interface ArPhotoFrameCameraProps {
   arPhotoFrameImagePage: string;
@@ -13,32 +13,37 @@ interface ArPhotoFrameCameraProps {
 
 const ArPhotoFrameCamera = ({ arPhotoFrameImagePage }: ArPhotoFrameCameraProps) => {
   const webcamRef = useRef<Webcam>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const router = useRouter();
   const context = useContext(ArPhotoFrameContext);
+  const overlayGif = "original.gif";
+
   if (!context) {
-    throw new Error('Context must be used within a Provider');
+    throw new Error("Context must be used within a Provider");
   }
-  const { setCapturedImageCanvas, setOverlayImage } = context;
+
+  const { setCapturedImageCanvas, setOverlayImageCanvas } = context;
 
   const videoConstraints: MediaTrackConstraints = {
     width: { ideal: 6144 },
     height: { ideal: 8192 },
-    aspectRatio: { exact: 4/3 },
-    facingMode: { ideal: "environment"}
-  }
+    aspectRatio: { exact: 4 / 3 },
+    facingMode: { ideal: "environment" },
+  };
+
+  useEffect(() => {
+    window.gifler(overlayGif).animate(canvasRef.current);
+  });
 
   const captureImage = useCallback(() => {
-    const imageSrc = webcamRef.current?.getCanvas();
-    if(!imageSrc) {
+    const captureImageCanvas = webcamRef.current?.getCanvas();
+    if (!captureImageCanvas) {
       return;
     }
-    setCapturedImageCanvas(imageSrc);
+    setCapturedImageCanvas(captureImageCanvas);
+    setOverlayImageCanvas(canvasRef.current);
     router.push(arPhotoFrameImagePage);
-  }, [webcamRef, setCapturedImageCanvas, router, arPhotoFrameImagePage]);
-
-  const handleImageLoad = (image: HTMLImageElement) => {
-    setOverlayImage(image);
-  };
+  }, [webcamRef, setCapturedImageCanvas, setOverlayImageCanvas, router, arPhotoFrameImagePage]);
 
   return (
     <div className={style.container}>
@@ -50,13 +55,10 @@ const ArPhotoFrameCamera = ({ arPhotoFrameImagePage }: ArPhotoFrameCameraProps) 
         videoConstraints={videoConstraints}
         className={style.camera}
       />
-      <NextjsImage
-        src={'/6144x8192.png'}
-        alt="overlyImage"
-        layout={"fill"}
+      <canvas
+        ref={canvasRef}
         className={style.image}
-        onLoadingComplete={handleImageLoad}
-      />
+      ></canvas>
       <button onClick={captureImage} className={style.button}>
         Capture Image
       </button>

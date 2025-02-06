@@ -6,7 +6,7 @@ import { ArPhotoFrameContext } from '@/contexts/ArPhotoFrameContext';
 
 interface ImageProcessorProps {
   capturedImageCanvas: HTMLCanvasElement | null,
-  overlayImage: HTMLImageElement | null,
+  overlayImageCanvas: HTMLCanvasElement | null,
   arPhotoFrameImageCanvasRef: RefObject<HTMLCanvasElement | null>
 }
 
@@ -15,10 +15,10 @@ interface ImageDisplayProps {
   onDownload: MouseEventHandler<HTMLButtonElement>
 }
 
-const ImageProcessor = ({ capturedImageCanvas, overlayImage, arPhotoFrameImageCanvasRef }: ImageProcessorProps) => {
+const ImageProcessor = ({ capturedImageCanvas, overlayImageCanvas, arPhotoFrameImageCanvasRef }: ImageProcessorProps) => {
   useEffect(() => {
-    if (!capturedImageCanvas || !overlayImage || !arPhotoFrameImageCanvasRef) {
-      alert('!capturedImageCanvas || !overlayImage || !arPhotoFrameImageCanvasRef')
+    if (!capturedImageCanvas || !overlayImageCanvas || !arPhotoFrameImageCanvasRef) {
+      alert('!capturedImageCanvas || !overlayImageCanvas || !arPhotoFrameImageCanvasRef')
       return;
     }
     const capturedImageCanvasContext = capturedImageCanvas.getContext('2d');
@@ -28,11 +28,11 @@ const ImageProcessor = ({ capturedImageCanvas, overlayImage, arPhotoFrameImageCa
       return;
     }
     capturedImageCanvasContext.drawImage(
-      overlayImage,
+      overlayImageCanvas,
       0,
-      0,
+      capturedImageCanvas.height / 2 - ((capturedImageCanvas.width / overlayImageCanvas.width) * overlayImageCanvas.height) / 2,
       capturedImageCanvas.width,
-      capturedImageCanvas.height
+      (capturedImageCanvas.width / overlayImageCanvas.width) * overlayImageCanvas.height
     );
     if (!arPhotoFrameImageCanvasRef.current) {
       return;
@@ -79,7 +79,7 @@ const ArPhotoFrameImageSavePage = () => {
   if (!context) {
     throw new Error('Context must be used within a Provider');
   }
-  const { capturedImageCanvas, overlayImage } = context;
+  const { capturedImageCanvas, overlayImageCanvas } = context;
 
   const handleDownload = async () => {
     if (!arPhotoFrameImageCanvasRef) {
@@ -103,7 +103,7 @@ const ArPhotoFrameImageSavePage = () => {
 
   return (
     <div>
-      <ImageProcessor capturedImageCanvas = {capturedImageCanvas} overlayImage={overlayImage} arPhotoFrameImageCanvasRef={arPhotoFrameImageCanvasRef} />
+      <ImageProcessor capturedImageCanvas = {capturedImageCanvas} overlayImageCanvas={overlayImageCanvas} arPhotoFrameImageCanvasRef={arPhotoFrameImageCanvasRef} />
       <ImageDisplay arPhotoFrameImageCanvasRef={arPhotoFrameImageCanvasRef} onDownload={handleDownload} />
     </div>
   );
