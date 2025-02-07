@@ -1,4 +1,6 @@
-import '../styles/reset.css';
+"use client";
+
+import '@/styles/reset.css';
 import { AppProps } from 'next/app';
 import { ArPhotoFrameProvider } from '@/contexts/ArPhotoFrameContext';
 

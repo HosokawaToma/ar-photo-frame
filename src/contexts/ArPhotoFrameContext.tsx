@@ -1,30 +1,19 @@
-import React, { createContext, useState, ReactNode } from 'react';
-
-export type ArPhotoFrameContextType = {
-  capturedImageCanvas: HTMLCanvasElement | null,
-  setCapturedImageCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | null>>
-  overlayImageCanvas: HTMLCanvasElement | null,
-  setOverlayImageCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | null>>
-};
+import React, { createContext, useState } from 'react';
 
 export const ArPhotoFrameContext = createContext<ArPhotoFrameContextType | undefined>(undefined);
 
-type ArPhotoFrameProviderProps = {
-  children: ReactNode;
-};
-
 export const ArPhotoFrameProvider: React.FC<ArPhotoFrameProviderProps> = ({ children }) => {
-  const [capturedImageCanvas, setCapturedImageCanvas] = useState<HTMLCanvasElement | null>(null);
-  const [overlayImageCanvas, setOverlayImageCanvas] = useState<HTMLCanvasElement | null>(null);
+  const [capturedCanvas, setCapturedCanvas] = useState<HTMLCanvasElement | null>(null);
+  const [overlayCanvas, setOverlayCanvas] = useState<HTMLCanvasElement | null>(null);
 
   return (
     <ArPhotoFrameContext.Provider
     value={
       {
-        capturedImageCanvas,
-        setCapturedImageCanvas,
-        overlayImageCanvas,
-        setOverlayImageCanvas
+        capturedCanvas,
+        setCapturedCanvas,
+        overlayCanvas,
+        setOverlayCanvas
       }
     }>
       {children}
