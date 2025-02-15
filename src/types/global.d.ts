@@ -39,6 +39,11 @@ declare global {
     overlayCanvas: HTMLCanvasElement | null,
     setOverlayCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | null>>
   };
+
+  type ArPhotoFramePageProps = {
+    id: string,
+    src: string
+  }
 }
 
 export {};
