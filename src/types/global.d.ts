@@ -33,7 +33,7 @@ declare global {
 
   type ArPhotoFramePageProps = {
     id: string;
-    src: string;
+    url: string;
     width: number;
     height: number;
   };

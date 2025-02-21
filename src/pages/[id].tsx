@@ -8,16 +8,16 @@ import useCapture from '@/hooks/useCapture';
 import useGifAnimator from '@/hooks/useGifAnimator';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { imageData } from '@/data/images';
-import useFileLoader from '@/hooks/useFileLoader';
 import useGifDecoder from '@/hooks/useGifDecoder';
+import useFetchFileAsUint8Array from '@/hooks/useFetchFileAsUint8Array';
 
-const ArPhotoFramePage = ({ src, width, height }: ArPhotoFramePageProps) => {
+const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
   const context = useContext(ArPhotoFrameContext);
   if (!context) {
     throw new Error('Context must be used within a Provider');
   }
   const { setCapturedCanvas, setOverlayGif } = context;
-  const { file } = useFileLoader(src);
+  const { file } = useFetchFileAsUint8Array(url)
   const { gif } = useGifDecoder(file)
   const { canvasRef } = useGifAnimator(gif);
   const { webcamRef, onCapture } = useCapture();

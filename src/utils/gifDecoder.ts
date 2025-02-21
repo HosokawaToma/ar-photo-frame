@@ -1,7 +1,7 @@
 import { GifReader } from "omggif";
 
-export const decodeGif = (file: ArrayBuffer): Gif => {
-  const reader = new GifReader(new Uint8Array(file));
+export const decodeGif = (file: Uint8Array): Gif => {
+  const reader = new GifReader(file);
   const width = reader.width;
   const height = reader.height;
   const frames = [];
