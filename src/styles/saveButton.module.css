@@ -1,13 +1,38 @@
 .button {
   position: absolute;
-  bottom: 5%;
+  bottom: 4%;
   left: 50%;
   transform: translateX(-50%);
-  padding: 10px 20px;
-  background-color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  width: 18rem;
+  height: 8rem;
+  border-radius: 1rem;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #000; /* テキスト黒 */
+  background: #fff; /* 背景白 */
+  border: none; /* 枠線なし */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem; /* アイコンとテキストの間隔 */
   cursor: pointer;
   z-index: 10;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影を追加 */
+}
+
+.button:hover {
+  background: #f0f0f0; /* 少しグレーがかる */
+}
+
+.button:active {
+  background: #e0e0e0;
+  transform: translateX(-50%) scale(0.97);
+}
+
+.icon {
+  width: 4rem;
+  height: 4rem;
+  fill: #000; /* アイコン黒 */
 }

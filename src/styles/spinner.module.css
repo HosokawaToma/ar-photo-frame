@@ -1,0 +1,40 @@
+.spinner-container {
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 10rem;
+  height: 10rem;
+  border: 1rem solid black;
+  border-top-color: aqua;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-text {
+  margin-top: 2rem; /* スピナーの下に配置 */
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none; /* クリックをスルー */
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

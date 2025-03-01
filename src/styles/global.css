@@ -1,0 +1,14 @@
+body {
+  touch-action: none;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  user-select: none;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: none;
+}

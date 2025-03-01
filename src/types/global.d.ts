@@ -6,10 +6,12 @@ declare global {
     webcamRef: RefObject<Webcam | null>;
     width: number;
     height: number;
+    onUserMedia?: (stream: MediaStream) => void;
   }
 
   interface CanvasProps {
     canvasRef: RefObject<HTMLCanvasElement | null>;
+    onMount?: () => void;
   }
 
   interface ButtonProps {
@@ -20,8 +22,23 @@ declare global {
     canvasRef: RefObject<HTMLCanvasElement | null>;
   }
 
+  interface SpinnerProps {
+    children?: React.ReactNode;
+    className?: string;
+  }
+
+  interface ShutterFadeInProps {
+    isActive: boolean;
+    children?: ReactNode;
+  }
+
+  interface ShutterFadeOutProps {
+    children?: ReactNode;
+  }
+
   type ArPhotoFrameProviderProps = {
     children: ReactNode;
+    className?: string;
   };
 
   type ArPhotoFrameContextType = {

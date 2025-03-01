@@ -1,7 +1,7 @@
 import Webcam from "react-webcam";
 import style from "@/styles/camera.module.css";
 
-const Camera = ({ webcamRef, width, height }: CameraProps) => {
+const Camera = ({ webcamRef, width, height, onUserMedia }: CameraProps) => {
   const videoConstraints: MediaTrackConstraints = {
     width: { ideal: width },
     height: { ideal: height },
@@ -17,6 +17,7 @@ const Camera = ({ webcamRef, width, height }: CameraProps) => {
       screenshotFormat="image/png"
       videoConstraints={videoConstraints}
       className={style.camera}
+      onUserMedia={onUserMedia}
     />
   );
 };

@@ -1,0 +1,70 @@
+.shutter {
+  position: absolute;
+  inset: 0;
+  background-color: black;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shutter-fade-in {
+  animation: fade-in 0.1s ease-out forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.content-fade-in {
+  opacity: 0;
+  transform: scale(0.9);
+  animation: content-fade-in 0.1s ease-out forwards;
+}
+
+@keyframes content-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.shutter-fade-out {
+  animation: fade-out 0.1s ease-out forwards;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.content-fade-out {
+  opacity: 1;
+  transform: scale(1);
+  animation: content-fade-out 0.1s ease-out forwards;
+}
+
+@keyframes content-fade-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+}

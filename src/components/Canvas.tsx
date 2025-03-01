@@ -1,6 +1,13 @@
 import style from '@/styles/canvas.module.css'
+import { useEffect } from "react";
 
-const Canvas = ({ canvasRef }: CanvasProps) => {
+const Canvas = ({ canvasRef, onMount }: CanvasProps) => {
+  useEffect(() => {
+    if (onMount) {
+      onMount();
+    }
+  }, [onMount]);
+
   return (
     <canvas
       ref={canvasRef}
