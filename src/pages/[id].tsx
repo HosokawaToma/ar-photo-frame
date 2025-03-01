@@ -1,26 +1,27 @@
-import { useContext, useState, useCallback } from 'react';
+import { useContext, useState, useCallback } from "react";
 import { ArPhotoFrameContext } from "@/contexts/ArPhotoFrameContext";
-import { useRouter } from 'next/router';
-import Camera from '@/components/Camera';
-import Canvas from '@/components/Canvas';
-import CaptureButton from '@/components/CaptureButton';
-import useCapture from '@/hooks/useCapture';
-import { GetStaticPaths, GetStaticProps } from 'next';
-import { imageData } from '@/data/images';
-import useGifDecoder from '@/hooks/useGifDecoder';
-import useFetchFileAsUint8Array from '@/hooks/useFetchFileAsUint8Array';
-import style from '@/styles/page.module.css';
-import Spinner from '@/components/Spinner';
-import useGifAnimator from '@/hooks/useGifAnimator';
+import { useRouter } from "next/router";
+import Camera from "@/components/Camera";
+import Canvas from "@/components/Canvas";
+import CaptureButton from "@/components/CaptureButton";
+import useCapture from "@/hooks/useCapture";
+import { GetStaticPaths, GetStaticProps } from "next";
+import { imageData } from "@/data/images";
+import useGifDecoder from "@/hooks/useGifDecoder";
+import useFetchFileAsUint8Array from "@/hooks/useFetchFileAsUint8Array";
+import style from "@/styles/page.module.css";
+import Spinner from "@/components/Spinner";
+import useGifAnimator from "@/hooks/useGifAnimator";
 import { useShutterEffect } from "@/hooks/useShutterEffect";
-import ShutterFadeIn from '@/components/ShutterFadeIn';
+import ShutterFadeIn from "@/components/ShutterFadeIn";
 
 const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
   const context = useContext(ArPhotoFrameContext);
   if (!context) {
-    throw new Error('Context must be used within a Provider');
+    throw new Error("Context must be used within a Provider");
   }
   const { setCapturedCanvas, setOverlayGif } = context;
+  const [aspectRatio, setAspectRatio] = useState(4/3);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const { webcamRef, onCapture } = useCapture();
   const { file } = useFetchFileAsUint8Array(url);
@@ -30,10 +31,16 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
   const router = useRouter();
 
   const onMount = useCallback(() => {
-    animate()
+    animate();
   }, [animate]);
 
-  const onUserMedia = useCallback(() => {
+  const onUserMedia = useCallback((stream: MediaStream) => {
+    const videoTrack = stream.getVideoTracks()[0];
+    const settings = videoTrack.getSettings();
+    const aspectRatio = settings.width! / settings.height!;
+    if (aspectRatio > 1) {
+      setAspectRatio(3/4)
+    }
     setIsCameraReady(true);
   }, []);
 
@@ -42,7 +49,7 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
     stop();
     setOverlayGif(gif);
     setCapturedCanvas(onCapture());
-    router.push('/saveImage');
+    router.push("/saveImage");
   }, [gif, onCapture, router, setCapturedCanvas, setOverlayGif, triggerShutter]);
 
   return (
@@ -52,16 +59,16 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
         {file && !gif && <Spinner className={style.spinner}>GIFをデコード中...</Spinner>}
         {gif && !isCameraReady && <Spinner className={style.spinner}>カメラを検索中...</Spinner>}
 
-        <Camera webcamRef={webcamRef} width={width} height={height} onUserMedia={onUserMedia} />
+        <Camera webcamRef={webcamRef} width={width} height={height} aspectRatio={aspectRatio} onUserMedia={onUserMedia} />
 
         {isCameraReady && (
           <div>
-            <Canvas canvasRef={canvasRef} onMount={onMount}/>
+            <Canvas canvasRef={canvasRef} onMount={onMount} />
             <CaptureButton onClick={onClick} />
           </div>
         )}
       </div>
-      <ShutterFadeIn isActive={isShutterActive}/>
+      <ShutterFadeIn isActive={isShutterActive} />
     </div>
   );
 };

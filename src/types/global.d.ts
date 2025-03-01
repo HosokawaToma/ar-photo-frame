@@ -6,6 +6,7 @@ declare global {
     webcamRef: RefObject<Webcam | null>;
     width: number;
     height: number;
+    aspectRatio: number;
     onUserMedia?: (stream: MediaStream) => void;
   }
 

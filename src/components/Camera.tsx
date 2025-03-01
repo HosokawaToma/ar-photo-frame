@@ -1,11 +1,11 @@
 import Webcam from "react-webcam";
 import style from "@/styles/camera.module.css";
 
-const Camera = ({ webcamRef, width, height, onUserMedia }: CameraProps) => {
+const Camera = ({ webcamRef, width, height, aspectRatio, onUserMedia }: CameraProps) => {
   const videoConstraints: MediaTrackConstraints = {
     width: { ideal: width },
     height: { ideal: height },
-    aspectRatio: { exact: 4 / 3 },
+    aspectRatio: { exact: aspectRatio },
     facingMode: { ideal: "environment" },
   };
 

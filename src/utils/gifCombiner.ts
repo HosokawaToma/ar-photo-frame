@@ -14,12 +14,12 @@ export const combineGifWithImageData = (gif: Gif, imageData: ImageData): Gif => 
     if (ctx) {
       ctx.putImageData(imageData, 0, 0)
       const overlayCanvas = document.createElement("canvas");
-      overlayCanvas.width = width;
-      overlayCanvas.height = height;
+      overlayCanvas.width = gif.frames[i].imageData.width;
+      overlayCanvas.height = gif.frames[i].imageData.height;
       const overlayCtx =  overlayCanvas.getContext("2d");
       if (overlayCtx) {
         overlayCtx.putImageData(gif.frames[i].imageData, 0, 0);
-        ctx.drawImage(overlayCanvas, 0, 0);
+        ctx.drawImage(overlayCanvas, 0, 0, width, height);
       }
       const combinedImageData = ctx.getImageData(0, 0, width, height);
       frames.push({ imageData: combinedImageData, delay: delay });
