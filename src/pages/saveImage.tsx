@@ -18,12 +18,16 @@ const SaveImage = () => {
 
   return (
     <div className={style.body}>
+        {combineGif && 
+        <>
         <div>
           <Canvas canvasRef={canvasRef} onMount={onMount} />
           {blob && <SaveButton onClick={onSave} />}
           <ShutterFadeOut/>
         </div>
         {!blob && <Spinner className={style["mini-spinner"]}>GIFにエンコード中...</Spinner>}
+        </>
+        }
     </div>
   );
 };
