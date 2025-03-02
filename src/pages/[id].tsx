@@ -1,4 +1,4 @@
-import { useContext, useState, useCallback } from "react";
+import { useContext, useState, useCallback, useEffect } from "react";
 import { ArPhotoFrameContext } from "@/contexts/ArPhotoFrameContext";
 import { useRouter } from "next/router";
 import Camera from "@/components/Camera";
@@ -30,6 +30,11 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
   const { isShutterActive, triggerShutter } = useShutterEffect();
   const router = useRouter();
 
+  useEffect(() => {
+    router.prefetch('/saveImage')
+    setOverlayGif(gif);
+  }, []);
+
   const onMount = useCallback(() => {
     animate();
   }, [animate]);
@@ -47,10 +52,9 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
   const onClick = useCallback(() => {
     triggerShutter();
     stop();
-    setOverlayGif(gif);
     setCapturedCanvas(onCapture());
     router.push("/saveImage");
-  }, [gif, onCapture, router, setCapturedCanvas, setOverlayGif, triggerShutter]);
+  }, [onCapture, router, setCapturedCanvas, triggerShutter]);
 
   return (
     <div className={style.body}>
