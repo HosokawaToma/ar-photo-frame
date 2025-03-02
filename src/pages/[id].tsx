@@ -1,57 +1,36 @@
-import { useContext, useState, useCallback, useEffect } from "react";
-import { ArPhotoFrameContext } from "@/contexts/ArPhotoFrameContext";
+import { useCallback, useEffect } from "react";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Camera from "@/components/Camera";
 import Canvas from "@/components/Canvas";
 import CaptureButton from "@/components/CaptureButton";
-import useCapture from "@/hooks/useCapture";
-import { GetStaticPaths, GetStaticProps } from "next";
-import { imageData } from "@/data/images";
-import useGifDecoder from "@/hooks/useGifDecoder";
-import useFetchFileAsUint8Array from "@/hooks/useFetchFileAsUint8Array";
-import style from "@/styles/page.module.css";
 import Spinner from "@/components/Spinner";
+import ShutterFadeIn from "@/components/ShutterFadeIn";
+import useArPhotoFrameContext from "@/hooks/useArPhotoFrameContext";
+import useWebcam from "@/hooks/useWebcam";
+import useFetchFileAsUint8Array from "@/hooks/useFetchFileAsUint8Array";
+import useGifDecoder from "@/hooks/useGifDecoder";
 import useGifAnimator from "@/hooks/useGifAnimator";
 import { useShutterEffect } from "@/hooks/useShutterEffect";
-import ShutterFadeIn from "@/components/ShutterFadeIn";
+import { imageData } from "@/data/images";
+import style from "@/styles/page.module.css";
 
 const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
-  const context = useContext(ArPhotoFrameContext);
-  if (!context) {
-    throw new Error("Context must be used within a Provider");
-  }
-  const { setCapturedCanvas, setOverlayGif } = context;
-  const [aspectRatio, setAspectRatio] = useState(4/3);
-  const [isCameraReady, setIsCameraReady] = useState(false);
-  const { webcamRef, onCapture } = useCapture();
+  const { setCapturedCanvas, setOverlayGif } = useArPhotoFrameContext();
+  const { webcamRef, aspectRatio, isCameraReady, onCapture, onUserMedia } = useWebcam();
   const { file } = useFetchFileAsUint8Array(url);
   const { gif } = useGifDecoder(file);
-  const { canvasRef, animate } = useGifAnimator(gif);
+  const { canvasRef, onMount } = useGifAnimator(gif);
   const { isShutterActive, triggerShutter } = useShutterEffect();
   const router = useRouter();
 
   useEffect(() => {
     router.prefetch('/saveImage')
     setOverlayGif(gif);
-  }, []);
-
-  const onMount = useCallback(() => {
-    animate();
-  }, [animate]);
-
-  const onUserMedia = useCallback((stream: MediaStream) => {
-    const videoTrack = stream.getVideoTracks()[0];
-    const settings = videoTrack.getSettings();
-    const aspectRatio = settings.width! / settings.height!;
-    if (aspectRatio > 1) {
-      setAspectRatio(3/4)
-    }
-    setIsCameraReady(true);
-  }, []);
+  }, [router, gif, setOverlayGif]);
 
   const onClick = useCallback(() => {
     triggerShutter();
-    stop();
     setCapturedCanvas(onCapture());
     router.push("/saveImage");
   }, [onCapture, router, setCapturedCanvas, triggerShutter]);
@@ -66,10 +45,10 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
         <Camera webcamRef={webcamRef} width={width} height={height} aspectRatio={aspectRatio} onUserMedia={onUserMedia} />
 
         {isCameraReady && (
-          <div>
+          <>
             <Canvas canvasRef={canvasRef} onMount={onMount} />
             <CaptureButton onClick={onClick} />
-          </div>
+          </>
         )}
       </div>
       <ShutterFadeIn isActive={isShutterActive} />
@@ -78,23 +57,15 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = imageData.map((image) => ({
-    params: { id: image.id },
-  }));
-
-  return { paths, fallback: false };
+  return {
+    paths: imageData.map(({ id }) => ({ params: { id } })),
+    fallback: false,
+  };
 };
 
-export const getStaticProps: GetStaticProps<ArPhotoFramePageProps> = async ({ params }) => {
-  const image = imageData.find((img) => img.id === params?.id);
-
-  if (!image) {
-    return { notFound: true };
-  }
-
-  return {
-    props: image,
-  };
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const image = imageData.find(({ id }) => id === params?.id);
+  return image ? { props: image } : { notFound: true };
 };
 
 export default ArPhotoFramePage;

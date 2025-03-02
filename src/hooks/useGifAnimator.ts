@@ -4,13 +4,13 @@ import { useRef, useCallback } from "react";
 const useGifAnimator = (gif: Gif | null) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const animate = useCallback(() => {
+  const onMount = useCallback(() => {
     if (gif && canvasRef.current) {
       animateGif(gif, canvasRef.current);
     }
-  }, [gif])
+  }, [gif]);
 
-  return { canvasRef, animate };
+  return { canvasRef, onMount };
 };
 
 export default useGifAnimator;

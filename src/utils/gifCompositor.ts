@@ -1,4 +1,4 @@
-export const combineGifWithImageData = (gif: Gif, imageData: ImageData): Gif => {
+export const compositeGif = (gif: Gif, imageData: ImageData): Gif => {
   const width = imageData.width;
   const height = imageData.height;
   const frames = [];

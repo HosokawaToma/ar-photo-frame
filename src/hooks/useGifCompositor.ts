@@ -1,7 +1,7 @@
-import { combineGifWithImageData } from "@/utils/gifCombiner";
+import { compositeGif } from "@/utils/gifCompositor";
 import { useState, useEffect } from "react";
 
-const useGifCombiner = (gif: Gif | null, canvas: HTMLCanvasElement | null) => {
+const useGifCompositor = (gif: Gif | null, canvas: HTMLCanvasElement | null) => {
   const [combineGif, setCombineGif] = useState<Gif | null>(null);
 
   useEffect(() => {
@@ -9,7 +9,7 @@ const useGifCombiner = (gif: Gif | null, canvas: HTMLCanvasElement | null) => {
       const context = canvas.getContext("2d");
       if (context) {
         const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-        const combineGif = combineGifWithImageData(gif, imageData);
+        const combineGif = compositeGif(gif, imageData);
         setCombineGif(combineGif);
       }
     }
@@ -18,4 +18,4 @@ const useGifCombiner = (gif: Gif | null, canvas: HTMLCanvasElement | null) => {
   return { combineGif };
 };
 
-export default useGifCombiner;
+export default useGifCompositor;
