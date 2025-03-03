@@ -1,0 +1,27 @@
+.buttonWrapper {
+  position: fixed;
+  top: 2%;
+  right: 5%;
+}
+
+.toggleButton {
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.toggleButton:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.icon {
+  color: white;
+}

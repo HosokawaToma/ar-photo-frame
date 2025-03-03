@@ -7,6 +7,7 @@ declare global {
     width: number;
     height: number;
     aspectRatio: number;
+    facingMode: string;
     onUserMedia?: (stream: MediaStream) => void;
   }
 

@@ -6,6 +6,7 @@ import Canvas from "@/components/Canvas";
 import CaptureButton from "@/components/CaptureButton";
 import Spinner from "@/components/Spinner";
 import ShutterFadeIn from "@/components/ShutterFadeIn";
+import CameraToggleFacingButton from "@/components/CameraToggleFacingButton";
 import useArPhotoFrameContext from "@/hooks/useArPhotoFrameContext";
 import useWebcam from "@/hooks/useWebcam";
 import useFetchFileAsUint8Array from "@/hooks/useFetchFileAsUint8Array";
@@ -17,7 +18,7 @@ import style from "@/styles/page.module.css";
 
 const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
   const { setCapturedCanvas, setOverlayGif } = useArPhotoFrameContext();
-  const { webcamRef, aspectRatio, isCameraReady, onCapture, onUserMedia } = useWebcam();
+  const { webcamRef, aspectRatio, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } = useWebcam();
   const { file } = useFetchFileAsUint8Array(url);
   const { gif } = useGifDecoder(file);
   const { canvasRef, onMount } = useGifAnimator(gif);
@@ -42,12 +43,13 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
         {file && !gif && <Spinner className={style.spinner}>GIFをデコード中...</Spinner>}
         {gif && !isCameraReady && <Spinner className={style.spinner}>カメラを検索中...</Spinner>}
 
-        <Camera webcamRef={webcamRef} width={width} height={height} aspectRatio={aspectRatio} onUserMedia={onUserMedia} />
+        <Camera webcamRef={webcamRef} width={width} height={height} aspectRatio={aspectRatio} facingMode={facingMode} onUserMedia={onUserMedia} />
 
         {isCameraReady && (
           <>
             <Canvas canvasRef={canvasRef} onMount={onMount} />
             <CaptureButton onClick={onClick} />
+            <CameraToggleFacingButton onToggle={toggleFacingMode} />
           </>
         )}
       </div>
