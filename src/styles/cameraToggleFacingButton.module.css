@@ -18,17 +18,10 @@
   background: rgba(0, 0, 0, 0.8);
 }
 
-/* SVG を `mask-image` にすることで色を自由に変更 */
+/* SVG のサイズを固定 */
 .icon {
   width: 3rem;
   height: 3rem;
-  background-color: white; /* ここで色を指定 */
-  -webkit-mask-image: url("/images/switch_camera.svg");
-  mask-image: url("/images/switch_camera.svg");
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
+  display: block;
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(56deg) brightness(105%) contrast(104%);
 }

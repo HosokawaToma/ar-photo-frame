@@ -4,7 +4,7 @@ import styles from "@/styles/cameraToggleFacingButton.module.css";
 const CameraToggleFacingButton = ({ onToggle }: { onToggle: () => void }) => {
   return (
     <button onClick={onToggle} className={styles.toggleButton}>
-      <div className={styles.icon} />
+      <img src="/images/switch_camera.svg" alt="カメラ切替" className={styles.icon} />
     </button>
   );
 };
