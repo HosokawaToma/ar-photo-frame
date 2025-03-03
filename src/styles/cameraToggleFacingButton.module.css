@@ -1,12 +1,8 @@
-.buttonWrapper {
+.toggleButton {
   position: fixed;
   top: 2%;
   right: 5%;
-}
-
-.toggleButton {
   background: rgba(0, 0, 0, 0.6);
-  color: white;
   border: none;
   border-radius: 50%;
   width: 4rem;
@@ -22,6 +18,17 @@
   background: rgba(0, 0, 0, 0.8);
 }
 
+/* SVG を `mask-image` にすることで色を自由に変更 */
 .icon {
-  color: white;
+  width: 3rem;
+  height: 3rem;
+  background-color: white; /* ここで色を指定 */
+  -webkit-mask-image: url("/images/switch_camera.svg");
+  mask-image: url("/images/switch_camera.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
