@@ -38,7 +38,7 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
 
   return (
     <div className={style.body}>
-      <div>
+      <div className={style.container}>
         {!file && <Spinner className={style.spinner}>GIFファイルを取得中...</Spinner>}
         {file && !gif && <Spinner className={style.spinner}>GIFをデコード中...</Spinner>}
         {gif && !isCameraReady && <Spinner className={style.spinner}>カメラを検索中...</Spinner>}

@@ -3,7 +3,7 @@ import Webcam from "react-webcam";
 
 const useWebcam = () => {
   const webcamRef = useRef<Webcam>(null);
-  const [aspectRatio, setAspectRatio] = useState(4/3);
+  const aspectRatio = 4/3;
   const [facingMode, setFacingMode] = useState<"user" | "environment">("environment");
   const [isCameraReady, setIsCameraReady] = useState(false);
 
@@ -19,13 +19,7 @@ const useWebcam = () => {
     return captureCanvas
   }, []);
 
-  const onUserMedia = useCallback((stream: MediaStream) => {
-    const videoTrack = stream.getVideoTracks()[0];
-    const settings = videoTrack.getSettings();
-    const aspectRatio = settings.width! / settings.height!;
-    if (aspectRatio > 1) {
-      setAspectRatio(3/4)
-    }
+  const onUserMedia = useCallback(() => {
     setIsCameraReady(true);
   }, []);
 
