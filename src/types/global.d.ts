@@ -46,12 +46,12 @@ declare global {
     className?: string;
   }
 
-  type ArPhotoFrameProviderProps = {
+  interface ArPhotoFrameProviderProps {
     children: ReactNode;
     className?: string;
   };
 
-  type ArPhotoFrameContextType = {
+  interface ArPhotoFrameContextType {
     capturedCanvas: HTMLCanvasElement | null;
     setCapturedCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | null>>;
     overlayGif: Gif | null;
@@ -60,7 +60,7 @@ declare global {
     setOverlayCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | null>>;
   };
 
-  type ArPhotoFramePageProps = {
+  interface ArPhotoFramePageProps {
     id: string;
     url: string;
     width: number;
