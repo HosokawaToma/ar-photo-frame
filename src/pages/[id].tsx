@@ -19,7 +19,7 @@ import style from "@/styles/page.module.css";
 
 const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
   const { setCapturedCanvas, setOverlayGif, setOverlayCanvas } = useArPhotoFrameContext();
-  const { webcamRef, aspectRatio, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } = useWebcam();
+  const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } = useWebcam();
   const { file } = useFetchFileAsUint8Array(url);
   const { gif } = useGifDecoder(file);
   const { canvasRef, onMount, animateStop } = useGifAnimator(gif);
@@ -56,8 +56,7 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
         <ProgressIndicator isLoading={file && !gif} className={style["progress-indicator"]}>GIFをデコード中...</ProgressIndicator>
         <ProgressIndicator isLoading={gif && !isCameraReady} className={style["progress-indicator"]}>カメラを検索中...</ProgressIndicator>
 
-        <Camera webcamRef={webcamRef} width={width} height={height} aspectRatio={aspectRatio} facingMode={facingMode} onUserMedia={onUserMedia} />
-
+        <Camera webcamRef={webcamRef} width={width} height={height} facingMode={facingMode} onUserMedia={onUserMedia} />
         {isCameraReady && (
           <>
             <Canvas canvasRef={canvasRef} onMount={onMount} />

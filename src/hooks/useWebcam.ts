@@ -3,7 +3,6 @@ import Webcam from "react-webcam";
 
 const useWebcam = () => {
   const webcamRef = useRef<Webcam>(null);
-  const aspectRatio = 4/3;
   const [facingMode, setFacingMode] = useState<"user" | "environment">("environment");
   const [isCameraReady, setIsCameraReady] = useState(false);
 
@@ -23,7 +22,7 @@ const useWebcam = () => {
     setIsCameraReady(true);
   }, []);
 
-  return { webcamRef, aspectRatio, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode };
+  return { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode };
 };
 
 export default useWebcam;
