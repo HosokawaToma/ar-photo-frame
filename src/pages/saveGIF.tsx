@@ -22,7 +22,7 @@ const SaveImage = () => {
         {combineGif && (
           <>
             <Canvas canvasRef={canvasRef} onMount={onMount} />
-            {blob && <SaveButton onClick={onSave} />}
+            {blob && <SaveButton onClick={onSave} className={style["save-button"]} />}
             <ShutterFadeOut />
             <ProgressIndicator isLoading={!blob} className={style["mini-spinner"]}>
               GIFにエンコード中...

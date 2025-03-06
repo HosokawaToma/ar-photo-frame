@@ -22,7 +22,7 @@ const SaveImage = () => {
         {combinedImageData && (
           <>
             <Canvas canvasRef={canvasRef} />
-            {blob && <SaveButton onClick={onSave} />}
+            {blob && <SaveButton onClick={onSave}  className={style["save-button"]}/>}
             <ShutterFadeOut />
             <ProgressIndicator isLoading={!blob} className={style["mini-progress-indicator"]}>
               PNGにエンコード中...

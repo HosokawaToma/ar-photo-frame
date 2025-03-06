@@ -1,9 +1,10 @@
 import React from "react";
 import style from "@/styles/saveButton.module.css";
+import { classNames } from "@/utils/classNames";
 
-const CaptureButton = ({ onClick }: { onClick: () => void }) => {
+const CaptureButton = ({ onClick, className }: ButtonProps) => {
   return (
-    <button onClick={onClick} className={style.button}>
+    <button onClick={onClick} className={classNames(style["button"], className)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
