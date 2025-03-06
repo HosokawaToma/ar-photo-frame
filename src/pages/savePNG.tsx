@@ -14,7 +14,7 @@ const SaveImage = () => {
   const { combinedImageData } = useImageDataCompositor(capturedCanvas, overlayCanvas);
   const { canvasRef } = useDrawImageData(combinedImageData);
   const { blob } = usePngEncoder(combinedImageData);
-  const { onSave } = useOnSave(blob);
+  const { onSave } = useOnSave(blob, '.png');
 
   return (
     <div className={style.body}>

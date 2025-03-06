@@ -14,7 +14,7 @@ const SaveImage = () => {
   const { combineGif } = useGifCompositor(overlayGif, capturedCanvas);
   const { canvasRef, onMount } = useGifAnimator(combineGif);
   const { blob } = useGifEncoder(combineGif);
-  const { onSave } = useOnSave(blob);
+  const { onSave } = useOnSave(blob, '.gif');
 
   return (
     <div className={style.body}>
