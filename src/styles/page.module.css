@@ -14,6 +14,12 @@
   overflow: hidden;
 }
 
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .camera-toggle-facing-button {
   top: 5%;
   right: 5%;

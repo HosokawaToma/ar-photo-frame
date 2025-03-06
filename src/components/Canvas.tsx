@@ -1,7 +1,8 @@
 import style from '@/styles/canvas.module.css'
+import { classNames } from '@/utils/classNames';
 import { useEffect } from "react";
 
-const Canvas = ({ canvasRef, onMount }: CanvasProps) => {
+const Canvas = ({ canvasRef, onMount, className }: CanvasProps) => {
   useEffect(() => {
     if (onMount) {
       onMount();
@@ -11,7 +12,7 @@ const Canvas = ({ canvasRef, onMount }: CanvasProps) => {
   return (
     <canvas
       ref={canvasRef}
-      className={style.canvas}
+      className={classNames(style.canvas, className)}
       ></canvas>
   )
 }

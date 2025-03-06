@@ -13,6 +13,7 @@ declare global {
   interface CanvasProps {
     canvasRef: RefObject<HTMLCanvasElement | null>;
     onMount?: () => void;
+    className?: string;
   }
 
   interface ButtonProps {

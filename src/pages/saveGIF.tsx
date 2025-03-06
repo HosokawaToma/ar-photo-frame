@@ -4,7 +4,7 @@ import useGifAnimator from "@/hooks/useGifAnimator";
 import useGifCompositor from "@/hooks/useGifCompositor";
 import useGifEncoder from "@/hooks/useGifEncoder";
 import useOnSave from "@/hooks/useOnSave";
-import style from '@/styles/page.module.css'
+import style from "@/styles/page.module.css";
 import ShutterFadeOut from "@/components/ShutterFadeOut";
 import ProgressIndicator from "@/components/ProgressIndicator";
 import useArPhotoFrameContext from "@/hooks/useArPhotoFrameContext";
@@ -14,20 +14,22 @@ const SaveImage = () => {
   const { combineGif } = useGifCompositor(overlayGif, capturedCanvas);
   const { canvasRef, onMount } = useGifAnimator(combineGif);
   const { blob } = useGifEncoder(combineGif);
-  const { onSave } = useOnSave(blob, '.gif');
+  const { onSave } = useOnSave(blob, ".gif");
 
   return (
     <div className={style.body}>
-        {combineGif && 
-        <>
-        <div>
-          <Canvas canvasRef={canvasRef} onMount={onMount} />
-          {blob && <SaveButton onClick={onSave} />}
-          <ShutterFadeOut/>
-        </div>
-        <ProgressIndicator isLoading={!blob} className={style["mini-spinner"]}>GIFにエンコード中...</ProgressIndicator>
-        </>
-        }
+      <div className={style.container}>
+        {combineGif && (
+          <>
+            <Canvas canvasRef={canvasRef} onMount={onMount} />
+            {blob && <SaveButton onClick={onSave} />}
+            <ShutterFadeOut />
+            <ProgressIndicator isLoading={!blob} className={style["mini-spinner"]}>
+              GIFにエンコード中...
+            </ProgressIndicator>
+          </>
+        )}
+      </div>
     </div>
   );
 };
