@@ -3,7 +3,7 @@ import Webcam from "react-webcam";
 
 const useWebcam = () => {
   const webcamRef = useRef<Webcam>(null);
-  const [facingMode, setFacingMode] = useState<"user" | "environment">("environment");
+  const [facingMode, setFacingMode] = useState<CameraFacingMode>("environment");
   const [isCameraReady, setIsCameraReady] = useState(false);
 
   const toggleFacingMode = useCallback(() => {

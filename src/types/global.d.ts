@@ -80,6 +80,8 @@ declare global {
   }
 
   type FileEncodeMode = "png" | "gif";
+
+  type CameraFacingMode = "user" | "environment"
 }
 
 export {};
