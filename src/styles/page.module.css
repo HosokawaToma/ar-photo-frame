@@ -20,6 +20,12 @@
   left: 0;
 }
 
+.capture-button {
+  left: 50%;
+  bottom: 2%;
+  transform: translateX(-50%);
+}
+
 .camera-toggle-facing-button {
   top: 5%;
   right: 5%;

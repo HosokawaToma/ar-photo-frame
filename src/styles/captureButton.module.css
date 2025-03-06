@@ -1,7 +1,4 @@
 .button {
-  left: 50%;
-  bottom: 2%;
-  transform: translateX(-50%);
   position: absolute;
   width: 5rem;
   height: 5rem;
