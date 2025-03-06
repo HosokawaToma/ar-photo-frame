@@ -5,6 +5,7 @@ export const ArPhotoFrameContext = createContext<ArPhotoFrameContextType | undef
 export const ArPhotoFrameProvider: React.FC<ArPhotoFrameProviderProps> = ({ children }) => {
   const [capturedCanvas, setCapturedCanvas] = useState<HTMLCanvasElement | null>(null);
   const [overlayGif, setOverlayGif] = useState<Gif | null>(null);
+  const [overlayCanvas, setOverlayCanvas] = useState<HTMLCanvasElement | null>(null);
 
   return (
     <ArPhotoFrameContext.Provider
@@ -13,7 +14,9 @@ export const ArPhotoFrameProvider: React.FC<ArPhotoFrameProviderProps> = ({ chil
         capturedCanvas,
         setCapturedCanvas,
         overlayGif,
-        setOverlayGif
+        setOverlayGif,
+        overlayCanvas,
+        setOverlayCanvas
       }
     }>
       {children}

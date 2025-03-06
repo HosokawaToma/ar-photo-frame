@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Camera from "@/components/Camera";
@@ -7,6 +7,7 @@ import CaptureButton from "@/components/CaptureButton";
 import Spinner from "@/components/Spinner";
 import ShutterFadeIn from "@/components/ShutterFadeIn";
 import CameraToggleFacingButton from "@/components/CameraToggleFacingButton";
+import EncodeModeToggleSwitch from "@/components/EncodeModeToggleSwitch";
 import useArPhotoFrameContext from "@/hooks/useArPhotoFrameContext";
 import useWebcam from "@/hooks/useWebcam";
 import useFetchFileAsUint8Array from "@/hooks/useFetchFileAsUint8Array";
@@ -17,24 +18,36 @@ import { imageData } from "@/data/images";
 import style from "@/styles/page.module.css";
 
 const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
-  const { setCapturedCanvas, setOverlayGif } = useArPhotoFrameContext();
+  const { setCapturedCanvas, setOverlayGif, setOverlayCanvas } = useArPhotoFrameContext();
   const { webcamRef, aspectRatio, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } = useWebcam();
   const { file } = useFetchFileAsUint8Array(url);
   const { gif } = useGifDecoder(file);
-  const { canvasRef, onMount } = useGifAnimator(gif);
+  const { canvasRef, onMount, animateStop } = useGifAnimator(gif);
   const { isShutterActive, triggerShutter } = useShutterEffect();
+  const [enabled, setEnabled] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    router.prefetch('/saveImage')
-    setOverlayGif(gif);
-  }, [router, gif, setOverlayGif]);
+    router.prefetch('/saveGIF')
+    router.prefetch('/savePNG')
+  }, [router, gif]);
+
+  const onToggleClick = useCallback(() => {
+    setEnabled(!enabled)
+  }, [enabled]);
 
   const onClick = useCallback(() => {
+    animateStop()
     triggerShutter();
     setCapturedCanvas(onCapture());
-    router.push("/saveImage");
-  }, [onCapture, router, setCapturedCanvas, triggerShutter]);
+    if (enabled) {
+      setOverlayGif(gif);
+      router.push("/saveGIF");
+    } else {
+      setOverlayCanvas(canvasRef.current)
+      router.push("/savePNG");
+    }
+  }, [onCapture, router, setCapturedCanvas, triggerShutter, animateStop, setOverlayGif, gif, setOverlayCanvas, canvasRef, enabled]);
 
   return (
     <div className={style.body}>
@@ -50,6 +63,7 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
             <Canvas canvasRef={canvasRef} onMount={onMount} />
             <CaptureButton onClick={onClick} />
             <CameraToggleFacingButton onToggle={toggleFacingMode} />
+            <EncodeModeToggleSwitch onClick={onToggleClick} enabled={enabled}/>
           </>
         )}
       </div>

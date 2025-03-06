@@ -38,6 +38,11 @@ declare global {
     children?: ReactNode;
   }
 
+  interface ToggleSwitchProps {
+    onClick: MouseEventHandler<HTMLButtonElement>;
+    enabled: boolean;
+  }
+
   type ArPhotoFrameProviderProps = {
     children: ReactNode;
     className?: string;
@@ -48,6 +53,8 @@ declare global {
     setCapturedCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | null>>;
     overlayGif: Gif | null;
     setOverlayGif: React.Dispatch<React.SetStateAction<Gif | null>>;
+    overlayCanvas: HTMLCanvasElement | null;
+    setOverlayCanvas: React.Dispatch<React.SetStateAction<HTMLCanvasElement | null>>;
   };
 
   type ArPhotoFramePageProps = {
