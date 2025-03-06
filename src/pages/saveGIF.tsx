@@ -6,7 +6,7 @@ import useGifEncoder from "@/hooks/useGifEncoder";
 import useOnSave from "@/hooks/useOnSave";
 import style from '@/styles/page.module.css'
 import ShutterFadeOut from "@/components/ShutterFadeOut";
-import Spinner from "@/components/Spinner";
+import ProgressIndicator from "@/components/ProgressIndicator";
 import useArPhotoFrameContext from "@/hooks/useArPhotoFrameContext";
 
 const SaveImage = () => {
@@ -25,7 +25,7 @@ const SaveImage = () => {
           {blob && <SaveButton onClick={onSave} />}
           <ShutterFadeOut/>
         </div>
-        {!blob && <Spinner className={style["mini-spinner"]}>GIFにエンコード中...</Spinner>}
+        <ProgressIndicator isLoading={!blob} className={style["mini-spinner"]}>GIFにエンコード中...</ProgressIndicator>
         </>
         }
     </div>

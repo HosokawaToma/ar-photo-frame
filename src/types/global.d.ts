@@ -24,7 +24,8 @@ declare global {
     canvasRef: RefObject<HTMLCanvasElement | null>;
   }
 
-  interface SpinnerProps {
+  interface ProgressIndicatorProps {
+    isLoading: boolean | null;
     children?: React.ReactNode;
     className?: string;
   }

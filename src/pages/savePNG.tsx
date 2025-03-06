@@ -5,7 +5,7 @@ import usePngEncoder from "@/hooks/usePngEncoder";
 import useOnSave from "@/hooks/useOnSave";
 import style from '@/styles/page.module.css'
 import ShutterFadeOut from "@/components/ShutterFadeOut";
-import Spinner from "@/components/Spinner";
+import ProgressIndicator from "@/components/ProgressIndicator";
 import useArPhotoFrameContext from "@/hooks/useArPhotoFrameContext";
 import useDrawImageData from "@/hooks/useDrawImageData";
 
@@ -25,7 +25,7 @@ const SaveImage = () => {
           {blob && <SaveButton onClick={onSave} />}
           <ShutterFadeOut/>
         </div>
-        {!blob && <Spinner className={style["mini-spinner"]}>PNGにエンコード中...</Spinner>}
+        <ProgressIndicator isLoading={!blob} className={style["mini-progress-indicator"]}>PNGにエンコード中...</ProgressIndicator>
         </>
         }
     </div>

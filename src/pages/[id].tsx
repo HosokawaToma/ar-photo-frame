@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Camera from "@/components/Camera";
 import Canvas from "@/components/Canvas";
 import CaptureButton from "@/components/CaptureButton";
-import Spinner from "@/components/Spinner";
+import ProgressIndicator from "@/components/ProgressIndicator";
 import ShutterFadeIn from "@/components/ShutterFadeIn";
 import CameraToggleFacingButton from "@/components/CameraToggleFacingButton";
 import EncodeModeToggleSwitch from "@/components/EncodeModeToggleSwitch";
@@ -52,9 +52,9 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
   return (
     <div className={style.body}>
       <div className={style.container}>
-        {!file && <Spinner className={style.spinner}>GIFファイルを取得中...</Spinner>}
-        {file && !gif && <Spinner className={style.spinner}>GIFをデコード中...</Spinner>}
-        {gif && !isCameraReady && <Spinner className={style.spinner}>カメラを検索中...</Spinner>}
+        <ProgressIndicator isLoading={!file} className={style["progress-indicator"]}>GIFファイルを取得中...</ProgressIndicator>
+        <ProgressIndicator isLoading={file && !gif} className={style["progress-indicator"]}>GIFをデコード中...</ProgressIndicator>
+        <ProgressIndicator isLoading={gif && !isCameraReady} className={style["progress-indicator"]}>カメラを検索中...</ProgressIndicator>
 
         <Camera webcamRef={webcamRef} width={width} height={height} aspectRatio={aspectRatio} facingMode={facingMode} onUserMedia={onUserMedia} />
 

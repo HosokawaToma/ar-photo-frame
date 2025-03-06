@@ -1,4 +1,4 @@
-.spinner-container {
+.indicator-container {
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-.spinner-wrapper {
+.indicator-wrapper {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -14,7 +14,7 @@
   justify-content: center;
 }
 
-.spinner {
+.indicator {
   width: 4rem;
   height: 4rem;
   border: 0.25rem solid black;
@@ -23,14 +23,14 @@
   animation: spin 1s linear infinite;
 }
 
-.spinner-text {
-  margin-top: 1rem; /* スピナーの下に配置 */
+.indicator-text {
+  margin-top: 1rem;
   font-size: 1rem;
   font-weight: bold;
   color: white;
   text-align: center;
   white-space: nowrap;
-  pointer-events: none; /* クリックをスルー */
+  pointer-events: none;
 }
 
 @keyframes spin {
