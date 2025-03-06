@@ -39,8 +39,9 @@ declare global {
   }
 
   interface ToggleSwitchProps {
-    onClick: MouseEventHandler<HTMLButtonElement>;
-    enabled: boolean;
+    fileEncodeMode: FileEncodeMode;
+    setFileEncodeMode:React.Dispatch<React.SetStateAction<FileEncodeMode>>;
+    className?: string;
   }
 
   type ArPhotoFrameProviderProps = {
@@ -75,6 +76,8 @@ declare global {
     height: number;
     totalFrames: number;
   }
+
+  type FileEncodeMode = "png" | "gif";
 }
 
 export {};

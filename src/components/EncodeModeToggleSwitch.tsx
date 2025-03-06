@@ -1,19 +1,17 @@
+import { useCallback } from "react"
 import style from "@/styles/encodeModeToggleSwitch.module.css";
+import { classNames } from "@/utils/classNames";
 
-const EncodeModeToggleSwitch = ({ onClick, enabled }: ToggleSwitchProps) => {
+const EncodeModeToggleSwitch = ({ fileEncodeMode, setFileEncodeMode, className }: ToggleSwitchProps) => {
+  const onClick = useCallback(() => {
+      setFileEncodeMode(fileEncodeMode === "png" ? "gif" : "png")
+    }, [setFileEncodeMode, fileEncodeMode]);
+
   return (
-    <div className={style["toggle-container"]} onClick={onClick}>
-      <span className={style[enabled ? "enabled" : "disabled"]}>
-        <span className={style["toggle-thumb"]} />
-      </span>
-      <div className={style["toggle-icons"]}>
-        <span className={style[enabled ? "inactive" : "active"]}>
-          <span className={style["icon"]}>PNG</span>
-        </span>
-        <span className={style[enabled ? "active" : "inactive"]}>
-          <span className={style["icon"]}>GIF</span>
-        </span>
-      </div>
+    <div className={classNames(style["toggle-container"], className)} onClick={onClick}>
+      <span className={classNames(style["toggle-thumb"], style[fileEncodeMode === "png" ? "png" : "gif"])} />
+      <span className={classNames(style["icon"], style[fileEncodeMode === "png" ? "active" : "inactive"])}>PNG</span>
+      <span className={classNames(style["icon"], style[fileEncodeMode === "gif" ? "active" : "inactive"])}>GIF</span>
     </div>
   );
 };

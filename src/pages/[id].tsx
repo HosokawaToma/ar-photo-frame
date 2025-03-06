@@ -24,7 +24,7 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
   const { gif } = useGifDecoder(file);
   const { canvasRef, onMount, animateStop } = useGifAnimator(gif);
   const { isShutterActive, triggerShutter } = useShutterEffect();
-  const [enabled, setEnabled] = useState(false);
+  const [fileEncodeMode, setFileEncodeMode] = useState<FileEncodeMode>("png");
   const router = useRouter();
 
   useEffect(() => {
@@ -32,22 +32,19 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
     router.prefetch('/savePNG')
   }, [router, gif]);
 
-  const onToggleClick = useCallback(() => {
-    setEnabled(!enabled)
-  }, [enabled]);
-
   const onClick = useCallback(() => {
     animateStop()
     triggerShutter();
     setCapturedCanvas(onCapture());
-    if (enabled) {
-      setOverlayGif(gif);
-      router.push("/saveGIF");
-    } else {
+    if (fileEncodeMode === "png") {
       setOverlayCanvas(canvasRef.current)
       router.push("/savePNG");
+    } 
+    if (fileEncodeMode === "gif") {
+      setOverlayGif(gif);
+      router.push("/saveGIF");
     }
-  }, [onCapture, router, setCapturedCanvas, triggerShutter, animateStop, setOverlayGif, gif, setOverlayCanvas, canvasRef, enabled]);
+  }, [onCapture, router, setCapturedCanvas, triggerShutter, animateStop, setOverlayGif, gif, setOverlayCanvas, canvasRef, fileEncodeMode]);
 
   return (
     <div className={style.body}>
@@ -62,7 +59,7 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
             <Canvas canvasRef={canvasRef} onMount={onMount} />
             <CaptureButton onClick={onClick} />
             <CameraToggleFacingButton onToggle={toggleFacingMode} />
-            <EncodeModeToggleSwitch onClick={onToggleClick} enabled={enabled}/>
+            <EncodeModeToggleSwitch fileEncodeMode={fileEncodeMode} setFileEncodeMode={setFileEncodeMode} className={style["encode-mode-toggle-switch"]}/>
           </>
         )}
       </div>
