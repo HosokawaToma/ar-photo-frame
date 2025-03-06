@@ -17,6 +17,7 @@ declare global {
 
   interface ButtonProps {
     onClick: React.MouseEventHandler<HTMLButtonElement>;
+    className?: string;
   }
 
   interface GifCanvasProps {

@@ -1,8 +1,6 @@
-.toggleButton {
+.button {
   position: fixed;
-  top: 2%;
-  right: 5%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0);
   border: none;
   border-radius: 50%;
   width: 4rem;
@@ -14,11 +12,6 @@
   transition: background 0.3s;
 }
 
-.toggleButton:hover {
-  background: rgba(0, 0, 0, 0.8);
-}
-
-/* SVG のサイズを固定 */
 .icon {
   width: 3rem;
   height: 3rem;

@@ -1,10 +1,12 @@
 import React from "react";
-import styles from "@/styles/cameraToggleFacingButton.module.css";
+import Image from "next/image";
+import style from "@/styles/cameraToggleFacingButton.module.css";
+import { classNames } from "@/utils/classNames";
 
-const CameraToggleFacingButton = ({ onToggle }: { onToggle: () => void }) => {
+const CameraToggleFacingButton = ({ onClick, className }: ButtonProps) => {
   return (
-    <button onClick={onToggle} className={styles.toggleButton}>
-      <img src="/images/switch_camera.svg" alt="カメラ切替" className={styles.icon} />
+    <button onClick={onClick} className={classNames(style["button"], className)}>
+      <Image src="/images/switch_camera.svg" alt="カメラ切替" layout='fill' className={style["icon"]} />
     </button>
   );
 };

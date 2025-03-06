@@ -58,7 +58,7 @@ const ArPhotoFramePage = ({ url, width, height }: ArPhotoFramePageProps) => {
           <>
             <Canvas canvasRef={canvasRef} onMount={onMount} />
             <CaptureButton onClick={onClick} />
-            <CameraToggleFacingButton onToggle={toggleFacingMode} />
+            <CameraToggleFacingButton onClick={toggleFacingMode} className={style["camera-toggle-facing-button"]} />
             <EncodeModeToggleSwitch fileEncodeMode={fileEncodeMode} setFileEncodeMode={setFileEncodeMode} className={style["encode-mode-toggle-switch"]}/>
           </>
         )}
