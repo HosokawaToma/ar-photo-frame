@@ -6,7 +6,7 @@ export function useShutterEffect() {
 
   useEffect(() => {
     const preloadShutterSound = async () => {
-      const response = await fetch("/Camera-Phone01-1.mp3");
+      const response = await fetch("/sounds/Camera-Phone01-1.mp3");
       const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
 
