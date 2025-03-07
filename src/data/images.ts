@@ -1,11 +1,6 @@
-export const imageData = [
-  { id: "1-15", url: "https://d16puu7yqfqgyf.cloudfront.net/1mp_15f_80ms.gif", width: 1280 , height: 960 },
-  { id: "2-15", url: "https://d16puu7yqfqgyf.cloudfront.net/2mp_15f_80ms.gif", width: 1600 , height: 1200 },
-  { id: "5-15", url: "https://d16puu7yqfqgyf.cloudfront.net/5mp_15f_80ms.gif", width: 2592 , height: 1944 },
-  { id: "1-30", url: "https://d16puu7yqfqgyf.cloudfront.net/1mp_30f_40ms.gif", width: 1280 , height: 960 },
-  { id: "2-30", url: "https://d16puu7yqfqgyf.cloudfront.net/2mp_30f_40ms.gif", width: 1600 , height: 1200 },
-  { id: "5-30", url: "https://d16puu7yqfqgyf.cloudfront.net/5mp_30f_40ms.gif", width: 2592 , height: 1944 },
-  { id: "1-60", url: "https://d16puu7yqfqgyf.cloudfront.net/1mp_60f_20ms.gif", width: 1280 , height: 960 },
-  { id: "2-60", url: "https://d16puu7yqfqgyf.cloudfront.net/2mp_60f_20ms.gif", width: 1600 , height: 1200 },
-  { id: "5-60", url: "https://d16puu7yqfqgyf.cloudfront.net/5mp_60f_20ms.gif", width: 2592 , height: 1944 },
+export const imagesData = [
+  { id: "faculty_of_architectural_design", fileUrl: "https://oecu-ar-photo-frame-bucket.s3.us-east-1.amazonaws.com/faculty_of_architectural_design.png", width: 1280 , height: 960, type: "png" },
+  { id:  "faculty_of_comprehensive_informatics", fileUrl: "https://oecu-ar-photo-frame-bucket.s3.us-east-1.amazonaws.com/faculty_of_comprehensive_informatics.png", width: 1280 , height: 960, type: "png" },
+  { id:  "faculty_of_information_and_communication_engineering", fileUrl: "https://oecu-ar-photo-frame-bucket.s3.us-east-1.amazonaws.com/faculty_of_information_and_communication_engineering.png", width: 1280 , height: 960, type: "png" },
+  { id:  "faculty_of_medical_and_health_sciences", fileUrl: "https://oecu-ar-photo-frame-bucket.s3.us-east-1.amazonaws.com/faculty_of_medical_and_health_sciences.png", width: 1280 , height: 960, type: "png" },
 ]

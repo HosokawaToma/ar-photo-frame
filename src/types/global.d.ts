@@ -41,8 +41,8 @@ declare global {
   }
 
   interface ToggleSwitchProps {
-    fileEncodeMode: FileEncodeMode;
-    setFileEncodeMode:React.Dispatch<React.SetStateAction<FileEncodeMode>>;
+    fileEncodeMode: FileType;
+    setFileEncodeMode:React.Dispatch<React.SetStateAction<FileType>>;
     className?: string;
   }
 
@@ -62,10 +62,17 @@ declare global {
 
   interface ArPhotoFramePageProps {
     id: string;
-    url: string;
+    fileUrl: string;
     width: number;
     height: number;
+    type: FileType;
   };
+
+  interface ScreenProps {
+    fileUrl: string;
+    width: number;
+    height: number;
+  }
 
   interface GifFrame {
     imageData: ImageData;
@@ -79,7 +86,7 @@ declare global {
     totalFrames: number;
   }
 
-  type FileEncodeMode = "png" | "gif";
+  type FileType = "png" | "gif";
 
   type CameraFacingMode = "user" | "environment"
 }
