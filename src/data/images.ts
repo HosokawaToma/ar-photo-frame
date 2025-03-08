@@ -14,6 +14,13 @@ export const imagesData = [
     type: "png",
   },
   {
+    id: "faculty_of_engineering",
+    fileUrl: "https://d3ebzsyq2w7mpl.cloudfront.net/faculty_of_engineering.png",
+    width: 1280,
+    height: 960,
+    type: "png",
+  },
+  {
     id: "faculty_of_information_and_communication_engineering",
     fileUrl: "https://d3ebzsyq2w7mpl.cloudfront.net/faculty_of_information_and_communication_engineering.png",
     width: 1280,
