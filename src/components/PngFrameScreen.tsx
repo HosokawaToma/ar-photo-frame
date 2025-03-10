@@ -36,19 +36,19 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
 
   return (
     <div className={style.body}>
-      <div className={style.container}>
-        <ProgressIndicator isLoading={!file} className={style["progress-indicator"]}>PNGファイルを取得中...</ProgressIndicator>
-        <ProgressIndicator isLoading={file && !imageData} className={style["progress-indicator"]}>PNGをデコード中...</ProgressIndicator>
-        <ProgressIndicator isLoading={imageData && !isCameraReady} className={style["progress-indicator"]}>カメラを検索中...</ProgressIndicator>
-
-        <Camera webcamRef={webcamRef} width={width} height={height} facingMode={facingMode} onUserMedia={onUserMedia} />
-        {isCameraReady && (
-          <>
-            <Canvas canvasRef={canvasRef} onMount={onMount} className={style["canvas"]} />
-            <CaptureButton onClick={onClick} className={style["capture-button"]} />
-            <CameraToggleFacingButton onClick={toggleFacingMode} className={style["camera-toggle-facing-button"]} />
-          </>
-        )}
+      <ProgressIndicator isLoading={!file} className={style["progress-indicator"]}>PNGファイルを取得中...</ProgressIndicator>
+      <ProgressIndicator isLoading={file && !imageData} className={style["progress-indicator"]}>PNGをデコード中...</ProgressIndicator>
+      <ProgressIndicator isLoading={file && imageData && !isCameraReady} className={style["progress-indicator"]}>カメラを検索中...</ProgressIndicator>
+      <div className={style["top-container"]}></div>
+      <div className={style["container"]}>
+        <Camera webcamRef={webcamRef} width={width} height={height} facingMode={facingMode} onUserMedia={onUserMedia} className={style["camera"]} />
+        {isCameraReady && <Canvas canvasRef={canvasRef} onMount={onMount} className={style["canvas"]} />}
+      </div>
+      <div className={style["bottom-container"]}>
+        <div className={style["bottom-grid"]}>
+          <CaptureButton onClick={onClick} className={style["capture-button"]} />
+          <CameraToggleFacingButton onClick={toggleFacingMode} className={style["camera-toggle-facing-button"]} />
+        </div>
       </div>
       <ShutterFadeIn isActive={isShutterActive} />
     </div>

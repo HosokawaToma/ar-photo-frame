@@ -1,20 +1,11 @@
 .button {
-  position: fixed;
-  background: rgba(0, 0, 0, 0);
   border: none;
-  border-radius: 50%;
-  width: 4rem;
-  height: 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.3s;
+  background: rgba(0, 0, 0, 0);
 }
 
 .icon {
-  width: 3rem;
-  height: 3rem;
-  display: block;
+  position: relative !important;
+  width: 100px;
+  height: 100px;
   filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(56deg) brightness(105%) contrast(104%);
 }

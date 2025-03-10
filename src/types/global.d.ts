@@ -8,6 +8,7 @@ declare global {
     height: number;
     facingMode: string;
     onUserMedia?: (stream: MediaStream) => void;
+    className?: string;
   }
 
   interface CanvasProps {
