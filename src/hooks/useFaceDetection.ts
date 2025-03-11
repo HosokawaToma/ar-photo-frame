@@ -6,7 +6,6 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [overlayImage, setOverlayImage] = useState<HTMLImageElement | null>(null);
-  const [isDetecion, setIsDetecion] = useState<boolean>(true);
 
   const faceDetectorOptions = new faceapi.TinyFaceDetectorOptions({
     inputSize: 512, // 入力サイズを大きく（128, 160, 224, 320, 416, 512, 608）
@@ -48,7 +47,6 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
     faceapi.matchDimensions(canvas, displaySize);
 
     const processDetection = async () => {
-      if (!isDetecion) return
       if (!canvasRef.current || !video) return;
       const detections = await faceapi.detectAllFaces(video, faceDetectorOptions).withFaceLandmarks();
       if (detections.length > 0) {
@@ -71,22 +69,12 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
       } else if (detections.length == 0) {
         context.clearRect(0, 0, canvas.width, canvas.height);
       }
-      
+
       requestAnimationFrame(processDetection);
     };
 
     processDetection();
   }, [modelsLoaded, overlayImage, webcamRef]);
 
-  const onMount = useCallback(() => {
-    if (modelsLoaded && canvasRef.current) {
-      detectFaces();
-    }
-  }, [modelsLoaded, detectFaces]);
-
-  const stopDetectFaces = () => {
-    setIsDetecion(false);
-  }
-
-  return { canvasRef, onMount, stopDetectFaces };
+  return { canvasRef, detectFaces };
 };

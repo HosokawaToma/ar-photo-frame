@@ -15,7 +15,7 @@ import { useFaceDetection } from "@/hooks/useFaceDetection";
 const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
   const { setCapturedCanvas, setOverlayCanvas } = useArPhotoFrameContext();
   const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } = useWebcam();
-  const { canvasRef, onMount, stopDetectFaces } = useFaceDetection(webcamRef, fileUrl);
+  const { canvasRef, detectFaces } = useFaceDetection(webcamRef, fileUrl);
   const { isShutterActive, triggerShutter } = useShutterEffect();
   const router = useRouter();
 
@@ -23,11 +23,15 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
     router.prefetch("/savePNG");
   }, [router]);
 
+  const newOnUserMedia = useCallback(() => {
+    onUserMedia();
+    detectFaces();
+  }, [onUserMedia, detectFaces])
+
   const onClick = useCallback(() => {
     triggerShutter();
     setCapturedCanvas(onCapture());
     setOverlayCanvas(canvasRef.current);
-    stopDetectFaces();
     router.push("/savePNG");
   }, [canvasRef, onCapture, router, setCapturedCanvas, setOverlayCanvas, triggerShutter]);
 
@@ -39,8 +43,8 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
       <div className={style["container"]}>
         <div className={style["top-box"]}></div>
         <div className={style["mid-box"]}>
-          <Camera webcamRef={webcamRef} width={width} height={height} facingMode={facingMode} onUserMedia={onUserMedia} className={style["camera"]} />
-          {isCameraReady && <Canvas canvasRef={canvasRef} onMount={onMount} className={style["canvas"]} />}
+          <Camera webcamRef={webcamRef} width={width} height={height} facingMode={facingMode} onUserMedia={newOnUserMedia} className={style["camera"]} />
+          {isCameraReady && <Canvas canvasRef={canvasRef} className={style["canvas"]} />}
         </div>
         <div className={style["bottom-box"]}>
           <div className={style["bottom-grid"]}>
