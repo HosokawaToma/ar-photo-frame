@@ -36,18 +36,26 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
 
   return (
     <div className={style.body}>
-      <ProgressIndicator isLoading={!file} className={style["progress-indicator"]}>PNGファイルを取得中...</ProgressIndicator>
-      <ProgressIndicator isLoading={file && !imageData} className={style["progress-indicator"]}>PNGをデコード中...</ProgressIndicator>
-      <ProgressIndicator isLoading={file && imageData && !isCameraReady} className={style["progress-indicator"]}>カメラを検索中...</ProgressIndicator>
-      <div className={style["top-container"]}></div>
+      <ProgressIndicator isLoading={!file} className={style["progress-indicator"]}>
+        PNGファイルを取得中...
+      </ProgressIndicator>
+      <ProgressIndicator isLoading={file && !imageData} className={style["progress-indicator"]}>
+        PNGをデコード中...
+      </ProgressIndicator>
+      <ProgressIndicator isLoading={file && imageData && !isCameraReady} className={style["progress-indicator"]}>
+        カメラを検索中...
+      </ProgressIndicator>
       <div className={style["container"]}>
-        <Camera webcamRef={webcamRef} width={width} height={height} facingMode={facingMode} onUserMedia={onUserMedia} className={style["camera"]} />
-        {isCameraReady && <Canvas canvasRef={canvasRef} onMount={onMount} className={style["canvas"]} />}
-      </div>
-      <div className={style["bottom-container"]}>
-        <div className={style["bottom-grid"]}>
-          <CaptureButton onClick={onClick} className={style["capture-button"]} />
-          <CameraToggleFacingButton onClick={toggleFacingMode} className={style["camera-toggle-facing-button"]} />
+        <div className={style["top-box"]}></div>
+        <div className={style["mid-box"]}>
+          <Camera webcamRef={webcamRef} width={width} height={height} facingMode={facingMode} onUserMedia={onUserMedia} className={style["camera"]} />
+          {isCameraReady && <Canvas canvasRef={canvasRef} onMount={onMount} className={style["canvas"]} />}
+        </div>
+        <div className={style["bottom-box"]}>
+          <div className={style["bottom-grid"]}>
+            <CaptureButton onClick={onClick} className={style["capture-button"]} />
+            <CameraToggleFacingButton onClick={toggleFacingMode} className={style["camera-toggle-facing-button"]} />
+          </div>
         </div>
       </div>
       <ShutterFadeIn isActive={isShutterActive} />
