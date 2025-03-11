@@ -7,7 +7,7 @@ export const imagesData = [
     type: "png",
   },
   {
-    id: "faculty_of_comprehensive_informatics",
+    id: "faculty_of_information_science_and_arts",
     fileUrl: "https://d3ebzsyq2w7mpl.cloudfront.net/faculty_of_comprehensive_informatics.png",
     width: 1280,
     height: 960,
@@ -28,21 +28,21 @@ export const imagesData = [
     type: "png",
   },
   {
-    id: "faculty_of_medical_and_health_sciences",
+    id: "faculty_of_medical_science_and_health-promotion",
     fileUrl: "https://d3ebzsyq2w7mpl.cloudfront.net/faculty_of_medical_and_health_sciences.png",
     width: 1280,
     height: 960,
     type: "png",
   },
   {
-    id: "oecu-from-spring",
+    id: "oecu_from_spring",
     fileUrl: "/images/oecu_from_spring.png",
     width: 1280,
     height: 960,
     type: "face",
   },
   {
-    id: "shachiku-from-spring",
+    id: "shachiku_from_spring",
     fileUrl: "/images/shachiku_from_spring.png",
     width: 1280,
     height: 960,
