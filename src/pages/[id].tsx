@@ -1,12 +1,17 @@
 import GifFrameScreen from "@/components/GifFrameScreen";
 import PngFrameScreen from "@/components/PngFrameScreen";
+import FaceFrameScreen from "@/components/FaceFrameScreen";
 import { imagesData } from "@/data/images";
 
 const ArPhotoFramePage = ({ fileUrl, width, height, type }: ArPhotoFramePageProps) => {
   return type === "png" ? (
     <PngFrameScreen fileUrl={fileUrl} width={width} height={height} />
   ) : (
-    <GifFrameScreen fileUrl={fileUrl} width={width} height={height} />
+    type === "gif" ? (
+      <GifFrameScreen fileUrl={fileUrl} width={width} height={height} />
+    ) : (
+      <FaceFrameScreen fileUrl={fileUrl} width={width} height={height} />
+    )
   );
 };
 

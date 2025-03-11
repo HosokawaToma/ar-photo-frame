@@ -34,4 +34,18 @@ export const imagesData = [
     height: 960,
     type: "png",
   },
+  {
+    id: "oecu-from-spring",
+    fileUrl: "/images/oecu_from_spring.png",
+    width: 1280,
+    height: 960,
+    type: "face",
+  },
+  {
+    id: "shachiku-from-spring",
+    fileUrl: "/images/shachiku_from_spring.png",
+    width: 1280,
+    height: 960,
+    type: "face",
+  }
 ];
