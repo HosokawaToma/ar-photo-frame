@@ -47,5 +47,12 @@ export const imagesData = [
     width: 1280,
     height: 960,
     type: "face",
+  },
+  {
+    id: "oecu",
+    fileUrl: "/images/oecu.png",
+    width: 1280,
+    height: 960,
+    type: "face",
   }
 ];
