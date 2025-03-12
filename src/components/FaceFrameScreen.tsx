@@ -56,11 +56,11 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
             onUserMedia={newOnUserMedia}
             className={style["camera"]}
           />
-          {modelsLoaded && isCameraReady && (
+          {(modelsLoaded && isCameraReady) && (
             <Canvas canvasRef={canvasRef} className={style["orvaly-canvas"]} />
           )}
         </div>
-        {modelsLoaded && isCameraReady && (
+        {(modelsLoaded && isCameraReady) && (
           <>
             <CaptureButton onClick={onClick} className={style["capture-button"]} />
             <CameraToggleFacingButton
