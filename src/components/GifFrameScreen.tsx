@@ -15,9 +15,10 @@ import { useShutterEffect } from "@/hooks/useShutterEffect";
 import style from "@/styles/page.module.css";
 import useFetchFile from "@/hooks/useFetchFile";
 
-const GifFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
+const GifFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) => {
   const { setCapturedCanvas, setOverlayGif, setOverlayCanvas } = useArPhotoFrameContext();
-  const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } = useWebcam();
+  const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } =
+    useWebcam();
   const { file } = useFetchFile(fileUrl);
   const { gif } = useGifDecoder(file);
   const { canvasRef, onMount, animateStop } = useGifAnimator(gif);
@@ -26,23 +27,34 @@ const GifFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    router.prefetch('/saveGIF')
-    router.prefetch('/savePNG')
+    router.prefetch("/saveGIF");
+    router.prefetch("/savePNG");
   }, [router, gif]);
 
   const onClick = useCallback(() => {
-    animateStop()
+    animateStop();
     triggerShutter();
     setCapturedCanvas(onCapture());
     if (fileEncodeMode === "png") {
-      setOverlayCanvas(canvasRef.current)
+      setOverlayCanvas(canvasRef.current);
       router.push("/savePNG");
     }
     if (fileEncodeMode === "gif") {
       setOverlayGif(gif);
       router.push("/saveGIF");
     }
-  }, [onCapture, router, setCapturedCanvas, triggerShutter, animateStop, setOverlayGif, gif, setOverlayCanvas, canvasRef, fileEncodeMode]);
+  }, [
+    onCapture,
+    router,
+    setCapturedCanvas,
+    triggerShutter,
+    animateStop,
+    setOverlayGif,
+    gif,
+    setOverlayCanvas,
+    canvasRef,
+    fileEncodeMode,
+  ]);
 
   return (
     <div className={style.body}>
@@ -70,6 +82,7 @@ const GifFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
             webcamRef={webcamRef}
             width={width}
             height={height}
+            aspectRatio={aspectRatio}
             facingMode={facingMode}
             onUserMedia={onUserMedia}
           />

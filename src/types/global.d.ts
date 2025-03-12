@@ -6,6 +6,7 @@ declare global {
     webcamRef: RefObject<Webcam | null>;
     width: number;
     height: number;
+    aspectRatio: number;
     facingMode: string;
     onUserMedia?: (stream: MediaStream) => void;
     className?: string;
@@ -66,6 +67,7 @@ declare global {
     fileUrl: string;
     width: number;
     height: number;
+    aspectRatio: number;
     type: FileType;
   };
 
@@ -73,6 +75,7 @@ declare global {
     fileUrl: string;
     width: number;
     height: number;
+    aspectRatio: number;
   }
 
   interface GifFrame {

@@ -14,7 +14,7 @@ import useFetchFile from "@/hooks/useFetchFile";
 import usePngDecoder from "@/hooks/usePngDecoder";
 import useImageDataDrawer from "@/hooks/useImageDataDrawer";
 
-const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
+const PngFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) => {
   const { setCapturedCanvas, setOverlayCanvas } = useArPhotoFrameContext();
   const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } =
     useWebcam();
@@ -54,6 +54,7 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
             webcamRef={webcamRef}
             width={width}
             height={height}
+            aspectRatio={aspectRatio}
             facingMode={facingMode}
             onUserMedia={onUserMedia}
             className={style["camera"]}

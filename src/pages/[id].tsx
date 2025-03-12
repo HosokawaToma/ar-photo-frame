@@ -3,15 +3,13 @@ import PngFrameScreen from "@/components/PngFrameScreen";
 import FaceFrameScreen from "@/components/FaceFrameScreen";
 import { imagesData } from "@/data/images";
 
-const ArPhotoFramePage = ({ fileUrl, width, height, type }: ArPhotoFramePageProps) => {
+const ArPhotoFramePage = ({ fileUrl, width, height, aspectRatio, type }: ArPhotoFramePageProps) => {
   return type === "png" ? (
-    <PngFrameScreen fileUrl={fileUrl} width={width} height={height} />
+    <PngFrameScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio} />
+  ) : type === "gif" ? (
+    <GifFrameScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio} />
   ) : (
-    type === "gif" ? (
-      <GifFrameScreen fileUrl={fileUrl} width={width} height={height} />
-    ) : (
-      <FaceFrameScreen fileUrl={fileUrl} width={width} height={height} />
-    )
+    <FaceFrameScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio} />
   );
 };
 
@@ -31,7 +29,7 @@ export const getStaticProps = async ({ params }: { params: { id: string } }) => 
   if (!imageData) return { notFound: true }
 
   return {
-    props: { fileUrl: imageData.fileUrl, width: imageData.width, height: imageData.height, type: imageData.type },
+    props: { fileUrl: imageData.fileUrl, width: imageData.width, height: imageData.height, aspectRatio: imageData.aspectRatio, type: imageData.type },
     revalidate: 3600,
   };
 };

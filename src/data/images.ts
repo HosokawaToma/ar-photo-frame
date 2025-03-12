@@ -4,6 +4,7 @@ export const imagesData = [
     fileUrl: "https://d3ebzsyq2w7mpl.cloudfront.net/faculty_of_architectural_design.png",
     width: 1280,
     height: 960,
+    aspectRatio: 4 / 3,
     type: "png",
   },
   {
@@ -11,6 +12,7 @@ export const imagesData = [
     fileUrl: "https://d3ebzsyq2w7mpl.cloudfront.net/faculty_of_comprehensive_informatics.png",
     width: 1280,
     height: 960,
+    aspectRatio: 4 / 3,
     type: "png",
   },
   {
@@ -18,6 +20,7 @@ export const imagesData = [
     fileUrl: "https://d3ebzsyq2w7mpl.cloudfront.net/faculty_of_engineering.png",
     width: 1280,
     height: 960,
+    aspectRatio: 4 / 3,
     type: "png",
   },
   {
@@ -26,6 +29,7 @@ export const imagesData = [
       "https://d3ebzsyq2w7mpl.cloudfront.net/faculty_of_information_and_communication_engineering.png",
     width: 1280,
     height: 960,
+    aspectRatio: 4 / 3,
     type: "png",
   },
   {
@@ -33,6 +37,7 @@ export const imagesData = [
     fileUrl: "https://d3ebzsyq2w7mpl.cloudfront.net/faculty_of_medical_and_health_sciences.png",
     width: 1280,
     height: 960,
+    aspectRatio: 4 / 3,
     type: "png",
   },
   {
@@ -40,6 +45,7 @@ export const imagesData = [
     fileUrl: "/images/oecu_from_spring.png",
     width: 1280,
     height: 960,
+    aspectRatio: 4 / 3,
     type: "face",
   },
   {
@@ -47,6 +53,7 @@ export const imagesData = [
     fileUrl: "/images/shachiku_from_spring.png",
     width: 1280,
     height: 960,
+    aspectRatio: 4 / 3,
     type: "face",
   },
   {
@@ -54,6 +61,7 @@ export const imagesData = [
     fileUrl: "/images/oecu.png",
     width: 1280,
     height: 960,
+    aspectRatio: 4 / 3,
     type: "face",
   },
   {
@@ -61,6 +69,7 @@ export const imagesData = [
     fileUrl: "/images/signboard_entrance_ceremony.png",
     width: 1280,
     height: 960,
+    aspectRatio: 16 / 9,
     type: "png",
   },
   {
@@ -68,6 +77,7 @@ export const imagesData = [
     fileUrl: "/images/signboard_graduation_ceremony.png",
     width: 1280,
     height: 960,
+    aspectRatio: 16 / 9,
     type: "png",
   },
   {
@@ -75,6 +85,7 @@ export const imagesData = [
     fileUrl: "/images/degree_entry_ceremony.png",
     width: 1280,
     height: 960,
+    aspectRatio: 16 / 9,
     type: "png",
   },
   {
@@ -82,6 +93,7 @@ export const imagesData = [
     fileUrl: "/images/magazine_style.png",
     width: 1280,
     height: 960,
+    aspectRatio: 16 / 9,
     type: "png",
   },
 ];

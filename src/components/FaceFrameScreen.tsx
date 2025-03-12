@@ -12,7 +12,7 @@ import { useShutterEffect } from "@/hooks/useShutterEffect";
 import style from "@/styles/page.module.css";
 import { useFaceDetection } from "@/hooks/useFaceDetection";
 
-const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
+const PngFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) => {
   const { setCapturedCanvas, setOverlayCanvas } = useArPhotoFrameContext();
   const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } =
     useWebcam();
@@ -53,14 +53,13 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
               webcamRef={webcamRef}
               width={width}
               height={height}
+              aspectRatio={aspectRatio}
               facingMode={facingMode}
               onUserMedia={newOnUserMedia}
               className={style["camera"]}
             />
           )}
-          {isCameraReady && (
-            <Canvas canvasRef={canvasRef} className={style["orvaly-canvas"]} />
-          )}
+          {isCameraReady && <Canvas canvasRef={canvasRef} className={style["orvaly-canvas"]} />}
         </div>
         {isCameraReady && (
           <>
