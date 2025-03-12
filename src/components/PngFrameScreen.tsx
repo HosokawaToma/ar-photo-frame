@@ -59,7 +59,7 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
             className={style["camera"]}
           />
           {isCameraReady && (
-            <Canvas canvasRef={canvasRef} onMount={onMount} className={style["canvas"]} />
+            <Canvas canvasRef={canvasRef} onMount={onMount} className={style["orvaly-canvas"]} />
           )}
         </div>
         <div className={style["bottom-box"]}>

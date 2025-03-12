@@ -25,7 +25,7 @@ const SaveImage = () => {
           </ProgressIndicator>
         </div>
         <div className={style["mid-box"]}>
-          {combinedImageData && <Canvas canvasRef={canvasRef} />}
+          {combinedImageData && <Canvas canvasRef={canvasRef} className={style["canvas"]} />}
         </div>
         <div className={style["bottom-box"]}>
           <div className={style["bottom-grid"]}>
