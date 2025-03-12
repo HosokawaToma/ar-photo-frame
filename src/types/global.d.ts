@@ -7,7 +7,7 @@ declare global {
     width: number;
     height: number;
     aspectRatio: number;
-    facingMode: string;
+    facingMode: CameraFacingMode;
     isCameraReady: boolean;
     onUserMedia?: (stream: MediaStream) => void;
     className?: string;

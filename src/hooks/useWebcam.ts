@@ -1,3 +1,4 @@
+import { mirrorCanvas } from "@/utils/mirrorCanvas";
 import { useCallback, useRef, useState } from "react";
 import Webcam from "react-webcam";
 
@@ -16,6 +17,7 @@ const useWebcam = () => {
       return null
     }
     const captureCanvas = webcamRef.current.getCanvas();
+    if (facingMode === "user") return mirrorCanvas(captureCanvas);
     return captureCanvas
   }, []);
 
