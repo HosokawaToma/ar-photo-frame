@@ -56,7 +56,6 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
     faceapi.matchDimensions(canvas, displaySize);
 
     const processDetection = async () => {
-      if (!canvasRef.current || !video) return;
       const detections = await faceapi
         .detectAllFaces(video, faceDetectorOptions)
         .withFaceLandmarks();
@@ -72,16 +71,12 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
 
           const centerX = (eyeLeft.x + eyeRight.x + nose.x) / 3;
           const centerY = (eyeLeft.y + eyeRight.y + nose.y + mouth.y) / 4;
-
           const faceWidth = eyeRight.x - eyeLeft.x;
-          const overlayWidth = faceWidth * 3.0;
-          context.drawImage(
-            overlayImage,
-            centerX - overlayWidth / 2,
-            centerY - overlayWidth / 2,
-            overlayWidth,
-            overlayWidth
-          );
+          const overlaySize = faceWidth * 3.0;
+          const overlayX = centerX - overlaySize / 2;
+          const overlayY = centerY - overlaySize / 2;
+
+          context.drawImage(overlayImage, overlayX, overlayY, overlaySize, overlaySize);
         });
       } else if (detections.length == 0) {
         context.clearRect(0, 0, canvas.width, canvas.height);
