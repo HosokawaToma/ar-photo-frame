@@ -31,24 +31,24 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
 
   const detectFaces = useCallback(async () => {
     if (!modelsLoaded || !canvasRef.current || !overlayImage || !webcamRef.current) {
-      setTimeout(detectFaces, 100);
+      setTimeout(detectFaces, 500);
       return;
     }
 
     const video = webcamRef.current.video;
     if (!video) {
-      setTimeout(detectFaces, 100);
+      setTimeout(detectFaces, 500);
       return;
     }
     if (video.readyState !== 4) {
-      setTimeout(detectFaces, 100);
+      setTimeout(detectFaces, 500);
       return;
     }
 
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     if (!context) {
-      setTimeout(detectFaces, 100);
+      setTimeout(detectFaces, 500);
       return;
     }
 
