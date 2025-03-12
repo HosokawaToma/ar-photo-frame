@@ -22,7 +22,8 @@ export const imagesData = [
   },
   {
     id: "faculty_of_information_and_communication_engineering",
-    fileUrl: "https://d3ebzsyq2w7mpl.cloudfront.net/faculty_of_information_and_communication_engineering.png",
+    fileUrl:
+      "https://d3ebzsyq2w7mpl.cloudfront.net/faculty_of_information_and_communication_engineering.png",
     width: 1280,
     height: 960,
     type: "png",
@@ -54,5 +55,33 @@ export const imagesData = [
     width: 1280,
     height: 960,
     type: "face",
-  }
+  },
+  {
+    id: "signboard_entrance_ceremony",
+    fileUrl: "/images/signboard_entrance_ceremony.png",
+    width: 1280,
+    height: 960,
+    type: "png",
+  },
+  {
+    id: "signboard_graduation_ceremony",
+    fileUrl: "/images/signboard_graduation_ceremony.png",
+    width: 1280,
+    height: 960,
+    type: "png",
+  },
+  {
+    id: "degree_entry_ceremony",
+    fileUrl: "/images/degree_entry_ceremony.png",
+    width: 1280,
+    height: 960,
+    type: "png",
+  },
+  {
+    id: "magazine_style",
+    fileUrl: "/images/magazine_style.png",
+    width: 1280,
+    height: 960,
+    type: "png",
+  },
 ];
