@@ -41,6 +41,7 @@
 }
 
 .capture-button {
+  width: 5rem;
   height: 5rem;
   position: absolute;
   bottom: 3%;
@@ -49,6 +50,7 @@
 }
 
 .camera-toggle-facing-button {
+  width: 5rem;
   height: 5rem;
   position: absolute;
   bottom: 3%;

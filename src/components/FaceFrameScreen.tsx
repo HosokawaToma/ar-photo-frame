@@ -16,7 +16,7 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
   const { setCapturedCanvas, setOverlayCanvas } = useArPhotoFrameContext();
   const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } =
     useWebcam();
-  const { canvasRef, detectFaces } = useFaceDetection(webcamRef, fileUrl);
+  const { canvasRef, modelsLoaded, detectFaces } = useFaceDetection(webcamRef, fileUrl);
   const { isShutterActive, triggerShutter } = useShutterEffect();
   const router = useRouter();
 
@@ -38,7 +38,12 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
 
   return (
     <div className={style.body}>
-      <ProgressIndicator isLoading={!isCameraReady} className={style["progress-indicator"]}>
+      <ProgressIndicator isLoading={!modelsLoaded} className={style["progress-indicator"]}>
+        モデルをロード中...
+      </ProgressIndicator>
+      <ProgressIndicator
+        isLoading={modelsLoaded && !isCameraReady}
+        className={style["progress-indicator"]}>
         カメラを検索中...
       </ProgressIndicator>
       <div className={style["container"]}>
@@ -51,9 +56,11 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
             onUserMedia={newOnUserMedia}
             className={style["camera"]}
           />
-          {isCameraReady && <Canvas canvasRef={canvasRef} className={style["orvaly-canvas"]} />}
+          {modelsLoaded && isCameraReady && (
+            <Canvas canvasRef={canvasRef} className={style["orvaly-canvas"]} />
+          )}
         </div>
-        {isCameraReady && (
+        {modelsLoaded && isCameraReady && (
           <>
             <CaptureButton onClick={onClick} className={style["capture-button"]} />
             <CameraToggleFacingButton
