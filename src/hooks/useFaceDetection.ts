@@ -56,6 +56,10 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
     faceapi.matchDimensions(canvas, displaySize);
 
     const processDetection = async () => {
+      if (!canvas || !video) {
+        processDetection()
+        return;
+      }
       const detections = await faceapi
         .detectAllFaces(video, faceDetectorOptions)
         .withFaceLandmarks();
