@@ -42,8 +42,7 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
         カメラを検索中...
       </ProgressIndicator>
       <div className={style["container"]}>
-        <div className={style["top-box"]}></div>
-        <div className={style["mid-box"]}>
+        <div className={style["camera-container"]}>
           <Camera
             webcamRef={webcamRef}
             width={width}
@@ -52,21 +51,17 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
             onUserMedia={newOnUserMedia}
             className={style["camera"]}
           />
-          {isCameraReady && <Canvas canvasRef={canvasRef} className={style["canvas"]} />}
+          {isCameraReady && <Canvas canvasRef={canvasRef} className={style["orvaly-canvas"]} />}
         </div>
-        <div className={style["bottom-box"]}>
-          <div className={style["bottom-grid"]}>
-            {isCameraReady && (
-              <>
-                <CaptureButton onClick={onClick} className={style["capture-button"]} />
-                <CameraToggleFacingButton
-                  onClick={toggleFacingMode}
-                  className={style["camera-toggle-facing-button"]}
-                />
-              </>
-            )}
-          </div>
-        </div>
+        {isCameraReady && (
+          <>
+            <CaptureButton onClick={onClick} className={style["capture-button"]} />
+            <CameraToggleFacingButton
+              onClick={toggleFacingMode}
+              className={style["camera-toggle-facing-button"]}
+            />
+          </>
+        )}
       </div>
       <ShutterFadeIn isActive={isShutterActive} />
     </div>

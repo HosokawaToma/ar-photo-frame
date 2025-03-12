@@ -16,22 +16,23 @@ import useImageDataDrawer from "@/hooks/useImageDataDrawer";
 
 const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
   const { setCapturedCanvas, setOverlayCanvas } = useArPhotoFrameContext();
-  const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } = useWebcam();
+  const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } =
+    useWebcam();
   const { file } = useFetchFile(fileUrl);
   const { imageData } = usePngDecoder(file);
-  const { canvasRef, onMount } = useImageDataDrawer(imageData)
+  const { canvasRef, onMount } = useImageDataDrawer(imageData);
   const { isShutterActive, triggerShutter } = useShutterEffect();
   const router = useRouter();
 
   useEffect(() => {
-    router.prefetch('/savePNG')
+    router.prefetch("/savePNG");
   }, [router]);
 
   const onClick = useCallback(() => {
     triggerShutter();
     setCapturedCanvas(onCapture());
-      setOverlayCanvas(canvasRef.current)
-      router.push("/savePNG");
+    setOverlayCanvas(canvasRef.current);
+    router.push("/savePNG");
   }, [canvasRef, onCapture, router, setCapturedCanvas, setOverlayCanvas, triggerShutter]);
 
   return (
@@ -48,8 +49,7 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
         カメラを検索中...
       </ProgressIndicator>
       <div className={style["container"]}>
-        <div className={style["top-box"]}></div>
-        <div className={style["mid-box"]}>
+        <div className={style["camera-container"]}>
           <Camera
             webcamRef={webcamRef}
             width={width}
@@ -62,19 +62,15 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
             <Canvas canvasRef={canvasRef} onMount={onMount} className={style["orvaly-canvas"]} />
           )}
         </div>
-        <div className={style["bottom-box"]}>
-          <div className={style["bottom-grid"]}>
-            {isCameraReady && (
-              <>
-                <CaptureButton onClick={onClick} className={style["capture-button"]} />
-                <CameraToggleFacingButton
-                  onClick={toggleFacingMode}
-                  className={style["camera-toggle-facing-button"]}
-                />
-              </>
-            )}
-          </div>
-        </div>
+        {isCameraReady && (
+          <>
+            <CaptureButton onClick={onClick} className={style["capture-button"]} />
+            <CameraToggleFacingButton
+              onClick={toggleFacingMode}
+              className={style["camera-toggle-facing-button"]}
+            />
+          </>
+        )}
       </div>
       <ShutterFadeIn isActive={isShutterActive} />
     </div>

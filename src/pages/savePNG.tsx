@@ -19,19 +19,11 @@ const SaveImage = () => {
   return (
     <div className={style.body}>
       <div className={style["container"]}>
-        <div className={style["top-box"]}>
-          <ProgressIndicator isLoading={!blob} className={style["mini-progress-indicator"]}>
-            PNGにエンコード中...
-          </ProgressIndicator>
-        </div>
-        <div className={style["mid-box"]}>
-          {combinedImageData && <Canvas canvasRef={canvasRef} className={style["canvas"]} />}
-        </div>
-        <div className={style["bottom-box"]}>
-          <div className={style["bottom-grid"]}>
-            {blob && <SaveButton onClick={onSave} className={style["save-button"]} />}
-          </div>
-        </div>
+        <ProgressIndicator isLoading={!blob} className={style["mini-progress-indicator"]}>
+          PNGにエンコード中...
+        </ProgressIndicator>
+        {combinedImageData && <Canvas canvasRef={canvasRef} className={style["canvas"]} />}
+        {blob && <SaveButton onClick={onSave} className={style["save-button"]} />}
       </div>
       <ShutterFadeOut />
     </div>
