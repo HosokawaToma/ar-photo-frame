@@ -37,7 +37,7 @@ const GifFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
     if (fileEncodeMode === "png") {
       setOverlayCanvas(canvasRef.current)
       router.push("/savePNG");
-    } 
+    }
     if (fileEncodeMode === "gif") {
       setOverlayGif(gif);
       router.push("/saveGIF");
@@ -46,20 +46,48 @@ const GifFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
 
   return (
     <div className={style.body}>
+      <ProgressIndicator isLoading={!file} className={style["progress-indicator"]}>
+        GIFファイルを取得中...
+      </ProgressIndicator>
+      <ProgressIndicator isLoading={file && !gif} className={style["progress-indicator"]}>
+        GIFをデコード中...
+      </ProgressIndicator>
+      <ProgressIndicator isLoading={gif && !isCameraReady} className={style["progress-indicator"]}>
+        カメラを検索中...
+      </ProgressIndicator>
       <div className={style.container}>
-        <ProgressIndicator isLoading={!file} className={style["progress-indicator"]}>GIFファイルを取得中...</ProgressIndicator>
-        <ProgressIndicator isLoading={file && !gif} className={style["progress-indicator"]}>GIFをデコード中...</ProgressIndicator>
-        <ProgressIndicator isLoading={gif && !isCameraReady} className={style["progress-indicator"]}>カメラを検索中...</ProgressIndicator>
-
-        <Camera webcamRef={webcamRef} width={width} height={height} facingMode={facingMode} onUserMedia={onUserMedia} />
-        {isCameraReady && (
-          <>
+        <div className={style["top-box"]}>
+          {isCameraReady && (
+            <EncodeModeToggleSwitch
+              fileEncodeMode={fileEncodeMode}
+              setFileEncodeMode={setFileEncodeMode}
+              className={style["encode-mode-toggle-switch"]}
+            />
+          )}
+        </div>
+        <div className={style["mid-box"]}>
+          <Camera
+            webcamRef={webcamRef}
+            width={width}
+            height={height}
+            facingMode={facingMode}
+            onUserMedia={onUserMedia}
+          />
+          {isCameraReady && (
             <Canvas canvasRef={canvasRef} onMount={onMount} className={style["canvas"]} />
-            <CaptureButton onClick={onClick} className={style["capture-button"]} />
-            <CameraToggleFacingButton onClick={toggleFacingMode} className={style["camera-toggle-facing-button"]} />
-            <EncodeModeToggleSwitch fileEncodeMode={fileEncodeMode} setFileEncodeMode={setFileEncodeMode} className={style["encode-mode-toggle-switch"]}/>
-          </>
-        )}
+          )}
+        </div>
+        <div className={style["bottom-box"]}>
+          {isCameraReady && (
+            <>
+              <CaptureButton onClick={onClick} className={style["capture-button"]} />
+              <CameraToggleFacingButton
+                onClick={toggleFacingMode}
+                className={style["camera-toggle-facing-button"]}
+              />
+            </>
+          )}
+        </div>
       </div>
       <ShutterFadeIn isActive={isShutterActive} />
     </div>

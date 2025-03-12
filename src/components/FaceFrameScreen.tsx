@@ -14,7 +14,8 @@ import { useFaceDetection } from "@/hooks/useFaceDetection";
 
 const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
   const { setCapturedCanvas, setOverlayCanvas } = useArPhotoFrameContext();
-  const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } = useWebcam();
+  const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } =
+    useWebcam();
   const { canvasRef, detectFaces } = useFaceDetection(webcamRef, fileUrl);
   const { isShutterActive, triggerShutter } = useShutterEffect();
   const router = useRouter();
@@ -26,7 +27,7 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
   const newOnUserMedia = useCallback(() => {
     onUserMedia();
     detectFaces();
-  }, [onUserMedia, detectFaces])
+  }, [onUserMedia, detectFaces]);
 
   const onClick = useCallback(() => {
     triggerShutter();
@@ -43,13 +44,27 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
       <div className={style["container"]}>
         <div className={style["top-box"]}></div>
         <div className={style["mid-box"]}>
-          <Camera webcamRef={webcamRef} width={width} height={height} facingMode={facingMode} onUserMedia={newOnUserMedia} className={style["camera"]} />
+          <Camera
+            webcamRef={webcamRef}
+            width={width}
+            height={height}
+            facingMode={facingMode}
+            onUserMedia={newOnUserMedia}
+            className={style["camera"]}
+          />
           {isCameraReady && <Canvas canvasRef={canvasRef} className={style["canvas"]} />}
         </div>
         <div className={style["bottom-box"]}>
           <div className={style["bottom-grid"]}>
-            <CaptureButton onClick={onClick} className={style["capture-button"]} />
-            <CameraToggleFacingButton onClick={toggleFacingMode} className={style["camera-toggle-facing-button"]} />
+            {isCameraReady && (
+              <>
+                <CaptureButton onClick={onClick} className={style["capture-button"]} />
+                <CameraToggleFacingButton
+                  onClick={toggleFacingMode}
+                  className={style["camera-toggle-facing-button"]}
+                />
+              </>
+            )}
           </div>
         </div>
       </div>
