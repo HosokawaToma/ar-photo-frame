@@ -55,6 +55,7 @@ const PngFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) =>
               height={height}
               aspectRatio={aspectRatio}
               facingMode={facingMode}
+              isCameraReady={isCameraReady}
               onUserMedia={newOnUserMedia}
               className={style["camera"]}
             />

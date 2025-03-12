@@ -8,6 +8,7 @@ declare global {
     height: number;
     aspectRatio: number;
     facingMode: string;
+    isCameraReady: boolean;
     onUserMedia?: (stream: MediaStream) => void;
     className?: string;
   }
