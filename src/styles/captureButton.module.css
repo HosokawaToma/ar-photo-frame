@@ -1,8 +1,6 @@
 .button {
-  transform: scale(0.85);
-  aspect-ratio: 1 / 1;
-  background-color: white;
-  border: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 3px solid white;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -11,9 +9,10 @@
 
 .button::before {
   content: "";
-  position: absolute;
-  width: calc(120% - 10px);
-  height: calc(120% - 10px);
-  border: 3px solid white;
+  width: 90%;
+  height: 90%;
   border-radius: 50%;
+  background-color: white;
+  border: none;
+  position: absolute;
 }
