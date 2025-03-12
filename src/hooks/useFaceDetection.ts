@@ -30,10 +30,16 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
   }, []);
 
   const detectFaces = useCallback(async () => {
-    if (!modelsLoaded || !canvasRef.current || !overlayImage || !webcamRef.current) return;
+    if (!modelsLoaded || !canvasRef.current || !overlayImage || !webcamRef.current) {
+      setTimeout(detectFaces, 100);
+      return;
+    }
 
     const video = webcamRef.current.video;
-    if (!video) return;
+    if (!video) {
+      setTimeout(detectFaces, 100);
+      return;
+    }
     if (video.readyState !== 4) {
       setTimeout(detectFaces, 100);
       return;
@@ -41,14 +47,19 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
 
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-    if (!context) return;
+    if (!context) {
+      setTimeout(detectFaces, 100);
+      return;
+    }
 
     const displaySize = { width: video.videoWidth, height: video.videoHeight };
     faceapi.matchDimensions(canvas, displaySize);
 
     const processDetection = async () => {
       if (!canvasRef.current || !video) return;
-      const detections = await faceapi.detectAllFaces(video, faceDetectorOptions).withFaceLandmarks();
+      const detections = await faceapi
+        .detectAllFaces(video, faceDetectorOptions)
+        .withFaceLandmarks();
       if (detections.length > 0) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         detections.forEach((detection) => {
@@ -64,7 +75,13 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
 
           const faceWidth = eyeRight.x - eyeLeft.x;
           const overlayWidth = faceWidth * 3.0;
-          context.drawImage(overlayImage, centerX - overlayWidth / 2, centerY - overlayWidth / 2, overlayWidth, overlayWidth);
+          context.drawImage(
+            overlayImage,
+            centerX - overlayWidth / 2,
+            centerY - overlayWidth / 2,
+            overlayWidth,
+            overlayWidth
+          );
         });
       } else if (detections.length == 0) {
         context.clearRect(0, 0, canvas.width, canvas.height);
