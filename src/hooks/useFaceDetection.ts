@@ -30,7 +30,20 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
   }, []);
 
   const detectFaces = useCallback(async () => {
-    if (!modelsLoaded || !canvasRef.current || !overlayImage || !webcamRef.current) {
+    if (!modelsLoaded) {
+      alert("not models loaded");
+      setTimeout(detectFaces, 100);
+      return;
+    }
+    if (!canvasRef.current) {
+      setTimeout(detectFaces, 100);
+      return;
+    }
+    if (!overlayImage) {
+      setTimeout(detectFaces, 100);
+      return;
+    }
+    if (!webcamRef.current) {
       setTimeout(detectFaces, 100);
       return;
     }
@@ -56,7 +69,7 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
     faceapi.matchDimensions(canvas, displaySize);
 
     const processDetection = async () => {
-      if (!canvas || !video) {
+      if (!canvasRef.current || !video) {
         setTimeout(detectFaces, 100);
         return;
       }

@@ -48,19 +48,21 @@ const PngFrameScreen = ({ fileUrl, width, height }: ScreenProps) => {
       </ProgressIndicator>
       <div className={style["container"]}>
         <div className={style["camera-container"]}>
-          <Camera
-            webcamRef={webcamRef}
-            width={width}
-            height={height}
-            facingMode={facingMode}
-            onUserMedia={newOnUserMedia}
-            className={style["camera"]}
-          />
-          {(modelsLoaded && isCameraReady) && (
+          {modelsLoaded && (
+            <Camera
+              webcamRef={webcamRef}
+              width={width}
+              height={height}
+              facingMode={facingMode}
+              onUserMedia={newOnUserMedia}
+              className={style["camera"]}
+            />
+          )}
+          {isCameraReady && (
             <Canvas canvasRef={canvasRef} className={style["orvaly-canvas"]} />
           )}
         </div>
-        {(modelsLoaded && isCameraReady) && (
+        {isCameraReady && (
           <>
             <CaptureButton onClick={onClick} className={style["capture-button"]} />
             <CameraToggleFacingButton
