@@ -2,6 +2,7 @@
   width: 100vw;
   height: 100dvh;
   background-color: black;
+  overflow: hidden;
 }
 
 .container {
@@ -15,16 +16,7 @@
 .camera-container {
   width: 100%;
   height: auto;
-  max-height: 100%;
   position: relative;
-}
-
-.bottom-grid {
-  width: 90%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  align-items: center;
 }
 
 .camera {
@@ -60,8 +52,7 @@
   height: 5rem;
   position: absolute;
   bottom: 3%;
-  right: 5%;
-  transform: translate(-50%);
+  right: 3%;
 }
 
 .encode-mode-toggle-switch {
