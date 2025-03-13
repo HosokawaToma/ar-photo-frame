@@ -1,32 +1,33 @@
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
-import Camera from "@/components/Camera";
-import Canvas from "@/components/Canvas";
-import CaptureButton from "@/components/CaptureButton";
-import ProgressIndicator from "@/components/ProgressIndicator";
-import ShutterFadeIn from "@/components/ShutterFadeIn";
-import CameraToggleFacingButton from "@/components/CameraToggleFacingButton";
+import Camera from "@/components/ui/Camera";
+import Canvas from "@/components/ui/Canvas";
+import CaptureButton from "@/components/ui/CaptureButton";
+import ProgressIndicator from "@/components/ui/ProgressIndicator";
+import ShutterFadeIn from "@/components/ui/ShutterFadeIn";
+import CameraToggleFacingButton from "@/components/ui/CameraToggleFacingButton";
 import useArPhotoFrameContext from "@/hooks/useArPhotoFrameContext";
 import useWebcam from "@/hooks/useWebcam";
 import { useShutterEffect } from "@/hooks/useShutterEffect";
 import style from "@/styles/page.module.css";
-import useFetchFile from "@/hooks/useFetchFile";
-import usePngDecoder from "@/hooks/usePngDecoder";
-import useImageDataDrawer from "@/hooks/useImageDataDrawer";
+import { useFaceDetection } from "@/hooks/useFaceDetection";
 
-const PngFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) => {
+const PngFrame = ({ fileUrl, width, height, aspectRatio }: FrameProps) => {
   const { setCapturedCanvas, setOverlayCanvas } = useArPhotoFrameContext();
   const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } =
     useWebcam();
-  const { file } = useFetchFile(fileUrl);
-  const { imageData } = usePngDecoder(file);
-  const { canvasRef, onMount } = useImageDataDrawer(imageData);
+  const { canvasRef, modelsLoaded, detectFaces } = useFaceDetection(webcamRef, fileUrl);
   const { isShutterActive, triggerShutter } = useShutterEffect();
   const router = useRouter();
 
   useEffect(() => {
     router.prefetch("/savePNG");
   }, [router]);
+
+  const newOnUserMedia = useCallback(() => {
+    onUserMedia();
+    detectFaces();
+  }, [onUserMedia, detectFaces]);
 
   const onClick = useCallback(() => {
     triggerShutter();
@@ -37,32 +38,29 @@ const PngFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) =>
 
   return (
     <div className={style["body"]}>
-      <ProgressIndicator isLoading={!file} className={style["progress-indicator"]}>
-        PNGファイルを取得中...
-      </ProgressIndicator>
-      <ProgressIndicator isLoading={file && !imageData} className={style["progress-indicator"]}>
-        PNGをデコード中...
+      <ProgressIndicator isLoading={!modelsLoaded} className={style["progress-indicator"]}>
+        モデルをロード中...
       </ProgressIndicator>
       <ProgressIndicator
-        isLoading={file && imageData && !isCameraReady}
+        isLoading={modelsLoaded && !isCameraReady}
         className={style["progress-indicator"]}>
         カメラを検索中...
       </ProgressIndicator>
       <div className={style["container"]}>
         <div className={style["camera-container"]}>
-          <Camera
-            webcamRef={webcamRef}
-            width={width}
-            height={height}
-            aspectRatio={aspectRatio}
-            facingMode={facingMode}
-            isCameraReady={isCameraReady}
-            onUserMedia={onUserMedia}
-            className={style["camera"]}
-          />
-          {isCameraReady && (
-            <Canvas canvasRef={canvasRef} onMount={onMount} className={style["overlay-canvas"]} />
+          {modelsLoaded && (
+            <Camera
+              webcamRef={webcamRef}
+              width={width}
+              height={height}
+              aspectRatio={aspectRatio}
+              facingMode={facingMode}
+              isCameraReady={isCameraReady}
+              onUserMedia={newOnUserMedia}
+              className={style["camera"]}
+            />
           )}
+          {isCameraReady && <Canvas canvasRef={canvasRef} className={style["overlay-canvas"]} />}
         </div>
         {isCameraReady && (
           <>
@@ -79,4 +77,4 @@ const PngFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) =>
   );
 };
 
-export default PngFrameScreen;
+export default PngFrame;

@@ -1,12 +1,12 @@
-import Canvas from "@/components/Canvas";
-import SaveButton from "@/components/SaveButton";
+import Canvas from "@/components/ui/Canvas";
+import SaveButton from "@/components/ui/SaveButton";
 import useGifAnimator from "@/hooks/useGifAnimator";
 import useGifCompositor from "@/hooks/useGifCompositor";
 import useGifEncoder from "@/hooks/useGifEncoder";
 import useOnSave from "@/hooks/useOnSave";
 import style from "@/styles/page.module.css";
-import ShutterFadeOut from "@/components/ShutterFadeOut";
-import ProgressIndicator from "@/components/ProgressIndicator";
+import ShutterFadeOut from "@/components/ui/ShutterFadeOut";
+import ProgressIndicator from "@/components/ui/ProgressIndicator";
 import useArPhotoFrameContext from "@/hooks/useArPhotoFrameContext";
 
 const SaveImage = () => {

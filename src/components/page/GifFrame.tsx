@@ -1,12 +1,12 @@
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
-import Camera from "@/components/Camera";
-import Canvas from "@/components/Canvas";
-import CaptureButton from "@/components/CaptureButton";
-import ProgressIndicator from "@/components/ProgressIndicator";
-import ShutterFadeIn from "@/components/ShutterFadeIn";
-import CameraToggleFacingButton from "@/components/CameraToggleFacingButton";
-import EncodeModeToggleSwitch from "@/components/EncodeModeToggleSwitch";
+import Camera from "@/components/ui/Camera";
+import Canvas from "@/components/ui/Canvas";
+import CaptureButton from "@/components/ui/CaptureButton";
+import ProgressIndicator from "@/components/ui/ProgressIndicator";
+import ShutterFadeIn from "@/components/ui/ShutterFadeIn";
+import CameraToggleFacingButton from "@/components/ui/CameraToggleFacingButton";
+import EncodeModeToggleSwitch from "@/components/ui/EncodeModeToggleSwitch";
 import useArPhotoFrameContext from "@/hooks/useArPhotoFrameContext";
 import useWebcam from "@/hooks/useWebcam";
 import useGifDecoder from "@/hooks/useGifDecoder";
@@ -15,7 +15,7 @@ import { useShutterEffect } from "@/hooks/useShutterEffect";
 import style from "@/styles/page.module.css";
 import useFetchFile from "@/hooks/useFetchFile";
 
-const GifFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) => {
+const GifFrame = ({ fileUrl, width, height, aspectRatio }: FrameProps) => {
   const { setCapturedCanvas, setOverlayGif, setOverlayCanvas } = useArPhotoFrameContext();
   const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } =
     useWebcam();
@@ -102,4 +102,4 @@ const GifFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) =>
   );
 };
 
-export default GifFrameScreen;
+export default GifFrame;

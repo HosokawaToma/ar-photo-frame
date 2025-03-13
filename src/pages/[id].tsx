@@ -1,6 +1,6 @@
-import GifFrameScreen from "@/components/GifFrameScreen";
-import PngFrameScreen from "@/components/PngFrameScreen";
-import FaceFrameScreen from "@/components/FaceFrameScreen";
+import GifFrameScreen from "@/components/page/GifFrame";
+import PngFrameScreen from "@/components/page/PngFrame";
+import FaceFrameScreen from "@/components/page/FaceFrame";
 import { imagesData } from "@/data/images";
 
 const ArPhotoFramePage = ({ fileUrl, width, height, aspectRatio, type }: ArPhotoFramePageProps) => {

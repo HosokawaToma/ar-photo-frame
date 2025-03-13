@@ -72,7 +72,7 @@ declare global {
     type: FileType;
   };
 
-  interface ScreenProps {
+  interface FrameProps {
     fileUrl: string;
     width: number;
     height: number;
