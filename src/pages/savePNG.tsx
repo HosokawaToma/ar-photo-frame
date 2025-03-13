@@ -19,13 +19,17 @@ const SaveImage = () => {
   return (
     <div className={style.body}>
       <div className={style["container"]}>
-        <ProgressIndicator isLoading={!blob} className={style["mini-progress-indicator"]}>
-          PNGにエンコード中...
-        </ProgressIndicator>
-        {combinedImageData && <Canvas canvasRef={canvasRef} className={style["canvas"]} />}
-        {blob && <SaveButton onClick={onSave} className={style["save-button"]} />}
+        {combinedImageData && (
+          <>
+            <Canvas canvasRef={canvasRef} className={style["canvas"]} />
+            <ProgressIndicator isLoading={!blob} className={style["mini-progress-indicator"]}>
+              PNGにエンコード中...
+            </ProgressIndicator>
+            {blob && <SaveButton onClick={onSave} className={style["save-button"]} />}
+          </>
+        )}
       </div>
-      <ShutterFadeOut />
+      {combinedImageData && <ShutterFadeOut />}
     </div>
   );
 };
