@@ -33,28 +33,22 @@ export const preparingFaceDetection = (
   return { video, context, canvas, image };
 };
 
-export const drawDetectionsLandmark = async (
+export const drawDetections = async (
   video: HTMLVideoElement,
   context: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   image: HTMLImageElement,
   mirrored: boolean
 ) => {
-  const detections = await faceapi.detectAllFaces(video, faceDetectorOptions).withFaceLandmarks();
+  const detections = await faceapi.detectAllFaces(video, faceDetectorOptions);
+
   context.clearRect(0, 0, canvas.width, canvas.height);
   if (detections.length > 0) {
     detections.forEach((detection) => {
-      const landmarks = detection.landmarks;
-
-      const eyeLeft = landmarks.positions[36];
-      const eyeRight = landmarks.positions[45];
-      const nose = landmarks.positions[30];
-      const mouth = landmarks.positions[62];
-
-      const centerX = (eyeLeft.x + eyeRight.x + nose.x) / 3;
-      const centerY = (eyeLeft.y + eyeRight.y + nose.y + mouth.y) / 4;
-      const faceWidth = eyeRight.x - eyeLeft.x;
-      const overlaySize = faceWidth * 3.0;
+      const { x, y, width, height } = detection.box;
+      const centerX = x + width / 2;
+      const centerY = y + height / 2;
+      const overlaySize = width * 1.2;
       let overlayX = centerX - overlaySize / 2;
       const overlayY = centerY - overlaySize / 2;
 

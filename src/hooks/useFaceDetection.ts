@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Webcam from "react-webcam";
 import * as faceapi from "face-api.js";
-import { loadFaceAipModels, preparingFaceDetection, drawDetectionsLandmark } from "@/utils/faceApi";
+import { loadFaceAipModels, preparingFaceDetection, drawDetections } from "@/utils/faceApi";
 
 export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, fileUrl: string) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -45,7 +45,7 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
       faceapi.matchDimensions(canvas, displaySize);
 
       const processDetection = async () => {
-        drawDetectionsLandmark(video, context, canvas, image, mirrored);
+        drawDetections(video, context, canvas, image, mirrored);
         animationFrameRef.current = requestAnimationFrame(processDetection);
       };
 
