@@ -36,7 +36,7 @@ const PngFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) =>
   }, [canvasRef, onCapture, router, setCapturedCanvas, setOverlayCanvas, triggerShutter]);
 
   return (
-    <div className={style.body}>
+    <div className={style["body"]}>
       <ProgressIndicator isLoading={!file} className={style["progress-indicator"]}>
         PNGファイルを取得中...
       </ProgressIndicator>
@@ -61,7 +61,7 @@ const PngFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) =>
             className={style["camera"]}
           />
           {isCameraReady && (
-            <Canvas canvasRef={canvasRef} onMount={onMount} className={style["orvaly-canvas"]} />
+            <Canvas canvasRef={canvasRef} onMount={onMount} className={style["overlay-canvas"]} />
           )}
         </div>
         {isCameraReady && (

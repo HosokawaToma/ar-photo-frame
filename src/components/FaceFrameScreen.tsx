@@ -37,7 +37,7 @@ const PngFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) =>
   }, [canvasRef, onCapture, router, setCapturedCanvas, setOverlayCanvas, triggerShutter]);
 
   return (
-    <div className={style.body}>
+    <div className={style["body"]}>
       <ProgressIndicator isLoading={!modelsLoaded} className={style["progress-indicator"]}>
         モデルをロード中...
       </ProgressIndicator>
@@ -60,7 +60,7 @@ const PngFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) =>
               className={style["camera"]}
             />
           )}
-          {isCameraReady && <Canvas canvasRef={canvasRef} className={style["orvaly-canvas"]} />}
+          {isCameraReady && <Canvas canvasRef={canvasRef} className={style["overlay-canvas"]} />}
         </div>
         {isCameraReady && (
           <>

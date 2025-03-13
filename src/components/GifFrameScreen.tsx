@@ -79,7 +79,7 @@ const GifFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) =>
             onUserMedia={onUserMedia}
           />
           {isCameraReady && (
-            <Canvas canvasRef={canvasRef} onMount={onMount} className={style["canvas"]} />
+            <Canvas canvasRef={canvasRef} onMount={onMount} className={style["overlay-canvas"]} />
           )}
         </div>
         {isCameraReady && (
