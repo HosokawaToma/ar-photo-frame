@@ -29,8 +29,8 @@ const PngFrame = ({ fileUrl, width, height, aspectRatio }: FrameProps) => {
 
   const newOnUserMedia = useCallback(() => {
     onUserMedia();
-    detectFaces();
-  }, [onUserMedia, detectFaces]);
+    detectFaces(facingMode === "user");
+  }, [onUserMedia, detectFaces, facingMode]);
 
   const onClick = useCallback(() => {
     triggerShutter();

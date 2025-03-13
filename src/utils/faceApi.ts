@@ -37,7 +37,8 @@ export const drawDetectionsLandmark = async (
   video: HTMLVideoElement,
   context: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
-  image: HTMLImageElement
+  image: HTMLImageElement,
+  mirrored: boolean
 ) => {
   const detections = await faceapi.detectAllFaces(video, faceDetectorOptions).withFaceLandmarks();
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -54,9 +55,10 @@ export const drawDetectionsLandmark = async (
       const centerY = (eyeLeft.y + eyeRight.y + nose.y + mouth.y) / 4;
       const faceWidth = eyeRight.x - eyeLeft.x;
       const overlaySize = faceWidth * 3.0;
-      const overlayX = centerX - overlaySize / 2;
+      let overlayX = centerX - overlaySize / 2;
       const overlayY = centerY - overlaySize / 2;
 
+      if (mirrored) overlayX = -overlayX - overlaySize + canvas.width;
       context.drawImage(image, overlayX, overlayY, overlaySize, overlaySize);
     });
   }

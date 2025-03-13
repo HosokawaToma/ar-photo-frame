@@ -3,13 +3,13 @@ import Webcam from "react-webcam";
 import * as faceapi from "face-api.js";
 import { loadFaceAipModels, preparingFaceDetection, drawDetectionsLandmark } from "@/utils/faceApi";
 
-export const useFaceDetection = (
-  webcamRef: React.RefObject<Webcam | null>,
-  fileUrl: string
-) => {
+export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, fileUrl: string) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [overlayImage, setOverlayImage] = useState<HTMLImageElement | null>(null);
+
+  // 最新の requestAnimationFrame の ID を管理
+  const animationFrameRef = useRef<number | null>(null);
 
   useEffect(() => {
     const img = new Image();
@@ -23,7 +23,12 @@ export const useFaceDetection = (
   }, []);
 
   const detectFaces = useCallback(
-    async () => {
+    async (mirrored: boolean) => {
+      // 以前の requestAnimationFrame をキャンセル
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+
       const faceDetectionInstance = preparingFaceDetection(
         modelsLoaded,
         canvasRef.current,
@@ -31,22 +36,32 @@ export const useFaceDetection = (
         webcamRef.current
       );
       if (!faceDetectionInstance) {
-        setTimeout(detectFaces, 100);
+        setTimeout(() => detectFaces(mirrored), 100);
         return;
       }
+
       const { video, context, canvas, image } = faceDetectionInstance;
       const displaySize = { width: video.videoWidth, height: video.videoHeight };
       faceapi.matchDimensions(canvas, displaySize);
 
       const processDetection = async () => {
-        drawDetectionsLandmark(video, context, canvas, image);
-        requestAnimationFrame(processDetection);
+        drawDetectionsLandmark(video, context, canvas, image, mirrored);
+        animationFrameRef.current = requestAnimationFrame(processDetection);
       };
 
       processDetection();
     },
     [modelsLoaded, overlayImage, webcamRef]
   );
+
+  // クリーンアップ関数で requestAnimationFrame をキャンセル
+  useEffect(() => {
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, []);
 
   return { canvasRef, modelsLoaded, detectFaces };
 };
