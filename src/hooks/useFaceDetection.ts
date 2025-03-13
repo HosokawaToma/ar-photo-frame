@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Webcam from "react-webcam";
 import * as faceapi from "face-api.js";
+import { loadFaceAipModels, preparingFaceDetection, drawDetectionsLandmark } from "@/utils/faceApi";
 
-export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, fileUrl: string) => {
+export const useFaceDetection = (
+  webcamRef: React.RefObject<Webcam | null>,
+  fileUrl: string
+) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [overlayImage, setOverlayImage] = useState<HTMLImageElement | null>(null);
-
-  const faceDetectorOptions = new faceapi.TinyFaceDetectorOptions({
-    inputSize: 512, // 入力サイズを大きく（128, 160, 224, 320, 416, 512, 608）
-    scoreThreshold: 0.3, // スコア閾値（デフォルト 0.1 だと誤検出しやすい）
-  });
 
   useEffect(() => {
     const img = new Image();
@@ -19,91 +18,35 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
   }, [fileUrl]);
 
   useEffect(() => {
-    const loadModels = async () => {
-      const MODEL_URL = "/models";
-      await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-      await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-      await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
-      setModelsLoaded(true);
-    };
-    loadModels();
+    loadFaceAipModels();
+    setModelsLoaded(true);
   }, []);
 
-  const detectFaces = useCallback(async () => {
-    if (!modelsLoaded) {
-      alert("not models loaded");
-      setTimeout(detectFaces, 100);
-      return;
-    }
-    if (!canvasRef.current) {
-      setTimeout(detectFaces, 100);
-      return;
-    }
-    if (!overlayImage) {
-      setTimeout(detectFaces, 100);
-      return;
-    }
-    if (!webcamRef.current) {
-      setTimeout(detectFaces, 100);
-      return;
-    }
-
-    const video = webcamRef.current.video;
-    if (!video) {
-      setTimeout(detectFaces, 100);
-      return;
-    }
-    if (video.readyState !== 4) {
-      setTimeout(detectFaces, 100);
-      return;
-    }
-
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-    if (!context) {
-      setTimeout(detectFaces, 100);
-      return;
-    }
-
-    const displaySize = { width: video.videoWidth, height: video.videoHeight };
-    faceapi.matchDimensions(canvas, displaySize);
-
-    const processDetection = async () => {
-      if (!canvasRef.current || !video) {
+  const detectFaces = useCallback(
+    async () => {
+      const faceDetectionInstance = preparingFaceDetection(
+        modelsLoaded,
+        canvasRef.current,
+        overlayImage,
+        webcamRef.current
+      );
+      if (!faceDetectionInstance) {
         setTimeout(detectFaces, 100);
         return;
       }
-      const detections = await faceapi
-        .detectAllFaces(video, faceDetectorOptions)
-        .withFaceLandmarks();
-      if (detections.length > 0) {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        detections.forEach((detection) => {
-          const landmarks = detection.landmarks;
+      const { video, context, canvas, image } = faceDetectionInstance;
+      const displaySize = { width: video.videoWidth, height: video.videoHeight };
+      faceapi.matchDimensions(canvas, displaySize);
 
-          const eyeLeft = landmarks.positions[36];
-          const eyeRight = landmarks.positions[45];
-          const nose = landmarks.positions[30];
-          const mouth = landmarks.positions[62];
+      const processDetection = async () => {
+        drawDetectionsLandmark(video, context, canvas, image);
+        requestAnimationFrame(processDetection);
+      };
 
-          const centerX = (eyeLeft.x + eyeRight.x + nose.x) / 3;
-          const centerY = (eyeLeft.y + eyeRight.y + nose.y + mouth.y) / 4;
-          const faceWidth = eyeRight.x - eyeLeft.x;
-          const overlaySize = faceWidth * 3.0;
-          const overlayX = centerX - overlaySize / 2;
-          const overlayY = centerY - overlaySize / 2;
-
-          context.drawImage(overlayImage, overlayX, overlayY, overlaySize, overlaySize);
-        });
-      } else if (detections.length == 0) {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-      }
-
-      requestAnimationFrame(processDetection);
-    };
-
-    processDetection();
-  }, [modelsLoaded, overlayImage, webcamRef]);
+      processDetection();
+    },
+    [modelsLoaded, overlayImage, webcamRef]
+  );
 
   return { canvasRef, modelsLoaded, detectFaces };
 };
