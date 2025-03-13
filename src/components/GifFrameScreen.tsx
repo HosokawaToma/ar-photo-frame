@@ -57,7 +57,7 @@ const GifFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) =>
   ]);
 
   return (
-    <div className={style.body}>
+    <div className={style["body"]}>
       <ProgressIndicator isLoading={!file} className={style["progress-indicator"]}>
         GIFファイルを取得中...
       </ProgressIndicator>
@@ -67,40 +67,35 @@ const GifFrameScreen = ({ fileUrl, width, height, aspectRatio }: ScreenProps) =>
       <ProgressIndicator isLoading={gif && !isCameraReady} className={style["progress-indicator"]}>
         カメラを検索中...
       </ProgressIndicator>
-      <div className={style.container}>
-        <div className={style["top-box"]}>
-          {isCameraReady && (
-            <EncodeModeToggleSwitch
-              fileEncodeMode={fileEncodeMode}
-              setFileEncodeMode={setFileEncodeMode}
-              className={style["encode-mode-toggle-switch"]}
-            />
-          )}
-        </div>
-        <div className={style["mid-box"]}>
+      <div className={style["container"]}>
+        <div className={style["camera-container"]}>
           <Camera
             webcamRef={webcamRef}
             width={width}
             height={height}
             aspectRatio={aspectRatio}
             facingMode={facingMode}
+            isCameraReady={isCameraReady}
             onUserMedia={onUserMedia}
           />
           {isCameraReady && (
             <Canvas canvasRef={canvasRef} onMount={onMount} className={style["canvas"]} />
           )}
         </div>
-        <div className={style["bottom-box"]}>
-          {isCameraReady && (
-            <>
-              <CaptureButton onClick={onClick} className={style["capture-button"]} />
-              <CameraToggleFacingButton
-                onClick={toggleFacingMode}
-                className={style["camera-toggle-facing-button"]}
-              />
-            </>
-          )}
-        </div>
+        {isCameraReady && (
+          <>
+            <EncodeModeToggleSwitch
+              fileEncodeMode={fileEncodeMode}
+              setFileEncodeMode={setFileEncodeMode}
+              className={style["encode-mode-toggle-switch"]}
+            />
+            <CaptureButton onClick={onClick} className={style["capture-button"]} />
+            <CameraToggleFacingButton
+              onClick={toggleFacingMode}
+              className={style["camera-toggle-facing-button"]}
+            />
+          </>
+        )}
       </div>
       <ShutterFadeIn isActive={isShutterActive} />
     </div>
