@@ -43,6 +43,14 @@ export const drawDetections = async (
   image: HTMLImageElement,
   mirrored: boolean
 ) => {
+  if (image.width === 0 || image.height === 0) {
+    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
+    return;
+  }
+  if (video.videoWidth === 0 || video.videoHeight === 0) {
+    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
+    return;
+  }
   const now = performance.now();
   if (now - lastDetectionTime < detectionInterval) {
     requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
