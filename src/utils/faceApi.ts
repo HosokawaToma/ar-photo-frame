@@ -2,7 +2,7 @@ import Webcam from "react-webcam";
 import * as faceapi from "face-api.js";
 
 const faceDetectorOptions = new faceapi.TinyFaceDetectorOptions({
-  inputSize: 512, // 入力サイズを大きく（128, 160, 224, 320, 416, 512, 608）
+  inputSize: 320, // 入力サイズを大きく（128, 160, 224, 320, 416, 512, 608）
   scoreThreshold: 0.3, // スコア閾値（デフォルト 0.1 だと誤検出しやすい）
 });
 
@@ -33,6 +33,9 @@ export const preparingFaceDetection = (
   return { video, context, canvas, image };
 };
 
+let lastDetectionTime = 0;
+const detectionInterval = 100; // 100msごとに処理
+
 export const drawDetections = async (
   video: HTMLVideoElement,
   context: CanvasRenderingContext2D,
@@ -40,6 +43,13 @@ export const drawDetections = async (
   image: HTMLImageElement,
   mirrored: boolean
 ) => {
+  const now = performance.now();
+  if (now - lastDetectionTime < detectionInterval) {
+    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
+    return;
+  }
+  lastDetectionTime = now;
+
   const detections = await faceapi.detectAllFaces(video, faceDetectorOptions);
 
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -56,4 +66,6 @@ export const drawDetections = async (
       context.drawImage(image, overlayX, overlayY, overlaySize, overlaySize);
     });
   }
+
+  requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
 };
