@@ -65,6 +65,14 @@ export const imagesData = [
     type: "face",
   },
   {
+    id: "oecu_desktop",
+    fileUrl: "/images/oecu.png",
+    width: 1920,
+    height: 1080,
+    aspectRatio: 16 / 9,
+    type: "face",
+  },
+  {
     id: "signboard_entrance_ceremony",
     fileUrl: "/images/signboard_entrance_ceremony.png",
     width: 1280,
