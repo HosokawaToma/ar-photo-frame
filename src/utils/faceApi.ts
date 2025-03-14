@@ -2,7 +2,7 @@ import Webcam from "react-webcam";
 import * as faceapi from "face-api.js";
 
 const faceDetectorOptions = new faceapi.TinyFaceDetectorOptions({
-  inputSize: 320, // 入力サイズを大きく（128, 160, 224, 320, 416, 512, 608）
+  inputSize: 512, // 入力サイズを大きく（128, 160, 224, 320, 416, 512, 608）
   scoreThreshold: 0.3, // スコア閾値（デフォルト 0.1 だと誤検出しやすい）
 });
 
