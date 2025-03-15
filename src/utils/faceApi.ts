@@ -35,6 +35,7 @@ export const preparingFaceDetection = (
 
 let lastDetectionTime = 0;
 const detectionInterval = 100; // 100msごとに処理
+const detectionIntervalDesktop = 50; // 10msごとに処理
 
 export const drawDetections = async (
   video: HTMLVideoElement,
@@ -53,9 +54,16 @@ export const drawDetections = async (
     return;
   }
 
-  if (!desktop) {
+  if (desktop) {
     const now = performance.now();
     if (now - lastDetectionTime < detectionInterval) {
+      requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored, desktop));
+      return;
+    }
+    lastDetectionTime = now;
+  } else {
+    const now = performance.now();
+    if (now - lastDetectionTime < detectionIntervalDesktop) {
       requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored, desktop));
       return;
     }
