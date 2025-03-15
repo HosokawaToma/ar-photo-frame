@@ -23,7 +23,7 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
   }, []);
 
   const detectFaces = useCallback(
-    async (mirrored: boolean, desktop: boolean) => {
+    async (mirrored: boolean) => {
       // 以前の requestAnimationFrame をキャンセル
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
@@ -36,7 +36,7 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
         webcamRef.current
       );
       if (!faceDetectionInstance) {
-        setTimeout(() => detectFaces(mirrored, desktop), 100);
+        setTimeout(() => detectFaces(mirrored), 100);
         return;
       }
 
@@ -45,7 +45,7 @@ export const useFaceDetection = (webcamRef: React.RefObject<Webcam | null>, file
       faceapi.matchDimensions(canvas, displaySize);
 
       const processDetection = async () => {
-        drawDetections(video, context, canvas, image, mirrored, desktop);
+        drawDetections(video, context, canvas, image, mirrored);
         animationFrameRef.current = requestAnimationFrame(processDetection);
       };
 

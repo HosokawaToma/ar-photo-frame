@@ -1,7 +1,6 @@
 import GifFrameScreen from "@/components/page/GifFrame";
 import PngFrameScreen from "@/components/page/PngFrame";
 import FaceFrameScreen from "@/components/page/FaceFrame";
-import FaceFrameDesktopScreen from "@/components/page/FaceFrameDesktop";
 import { imagesData } from "@/data/images";
 
 const ArPhotoFramePage = ({ fileUrl, width, height, aspectRatio, type }: ArPhotoFramePageProps) => {
@@ -9,21 +8,17 @@ const ArPhotoFramePage = ({ fileUrl, width, height, aspectRatio, type }: ArPhoto
     <PngFrameScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio} />
   ) : type === "gif" ? (
     <GifFrameScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio} />
-    ) : (
-        type === "face" ? (
-          <FaceFrameScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio} />
-        ) : (
-          <FaceFrameDesktopScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio}/>
-        )
+  ) : (
+    <FaceFrameScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio} />
   );
 };
 
 export async function getStaticPaths() {
   return {
     paths: imagesData.map((imageData) => ({
-      params: { id: imageData.id }
+      params: { id: imageData.id },
     })),
-    fallback: 'blocking',
+    fallback: "blocking",
   };
 }
 
@@ -31,10 +26,16 @@ export const getStaticProps = async ({ params }: { params: { id: string } }) => 
   if (!params?.id) return { notFound: true };
 
   const imageData = imagesData.find((image) => image.id === params.id);
-  if (!imageData) return { notFound: true }
+  if (!imageData) return { notFound: true };
 
   return {
-    props: { fileUrl: imageData.fileUrl, width: imageData.width, height: imageData.height, aspectRatio: imageData.aspectRatio, type: imageData.type },
+    props: {
+      fileUrl: imageData.fileUrl,
+      width: imageData.width,
+      height: imageData.height,
+      aspectRatio: imageData.aspectRatio,
+      type: imageData.type,
+    },
     revalidate: 3600,
   };
 };

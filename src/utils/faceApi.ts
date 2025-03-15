@@ -35,40 +35,29 @@ export const preparingFaceDetection = (
 
 let lastDetectionTime = 0;
 const detectionInterval = 100; // 100msごとに処理
-const detectionIntervalDesktop = 50; // 10msごとに処理
 
 export const drawDetections = async (
   video: HTMLVideoElement,
   context: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   image: HTMLImageElement,
-  mirrored: boolean,
-  desktop: boolean,
+  mirrored: boolean
 ) => {
   if (image.width === 0 || image.height === 0) {
-    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored, desktop));
+    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
     return;
   }
   if (video.videoWidth === 0 || video.videoHeight === 0) {
-    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored, desktop));
+    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
     return;
   }
 
-  if (desktop) {
-    const now = performance.now();
-    if (now - lastDetectionTime < detectionInterval) {
-      requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored, desktop));
-      return;
-    }
-    lastDetectionTime = now;
-  } else {
-    const now = performance.now();
-    if (now - lastDetectionTime < detectionIntervalDesktop) {
-      requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored, desktop));
-      return;
-    }
-    lastDetectionTime = now;
+  const now = performance.now();
+  if (now - lastDetectionTime < detectionInterval) {
+    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
+    return;
   }
+  lastDetectionTime = now;
 
   const detections = await faceapi.detectAllFaces(video, faceDetectorOptions);
 
@@ -87,5 +76,5 @@ export const drawDetections = async (
     });
   }
 
-  requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored, desktop));
+  requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
 };

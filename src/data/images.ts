@@ -70,7 +70,7 @@ export const imagesData = [
     width: 1920,
     height: 1080,
     aspectRatio: 16 / 9,
-    type: "face_desktop",
+    type: "face",
   },
   {
     id: "signboard_entrance_ceremony",
