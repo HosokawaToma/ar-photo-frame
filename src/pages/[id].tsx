@@ -1,6 +1,7 @@
 import GifFrameScreen from "@/components/page/GifFrame";
 import PngFrameScreen from "@/components/page/PngFrame";
 import FaceFrameScreen from "@/components/page/FaceFrame";
+import FaceFrameDesktopScreen from "@/components/page/FaceFrameDesktop";
 import { imagesData } from "@/data/images";
 
 const ArPhotoFramePage = ({ fileUrl, width, height, aspectRatio, type }: ArPhotoFramePageProps) => {
@@ -8,8 +9,12 @@ const ArPhotoFramePage = ({ fileUrl, width, height, aspectRatio, type }: ArPhoto
     <PngFrameScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio} />
   ) : type === "gif" ? (
     <GifFrameScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio} />
-  ) : (
-    <FaceFrameScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio} />
+    ) : (
+        type === "face" ? (
+          <FaceFrameScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio} />
+        ) : (
+          <FaceFrameDesktopScreen fileUrl={fileUrl} width={width} height={height} aspectRatio={aspectRatio}/>
+        )
   );
 };
 

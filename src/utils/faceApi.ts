@@ -41,22 +41,26 @@ export const drawDetections = async (
   context: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   image: HTMLImageElement,
-  mirrored: boolean
+  mirrored: boolean,
+  desktop: boolean,
 ) => {
   if (image.width === 0 || image.height === 0) {
-    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
+    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored, desktop));
     return;
   }
   if (video.videoWidth === 0 || video.videoHeight === 0) {
-    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
+    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored, desktop));
     return;
   }
-  const now = performance.now();
-  if (now - lastDetectionTime < detectionInterval) {
-    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
-    return;
+
+  if (!desktop) {
+    const now = performance.now();
+    if (now - lastDetectionTime < detectionInterval) {
+      requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored, desktop));
+      return;
+    }
+    lastDetectionTime = now;
   }
-  lastDetectionTime = now;
 
   const detections = await faceapi.detectAllFaces(video, faceDetectorOptions);
 
@@ -75,5 +79,5 @@ export const drawDetections = async (
     });
   }
 
-  requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
+  requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored, desktop));
 };

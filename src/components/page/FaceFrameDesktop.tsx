@@ -29,7 +29,7 @@ const PngFrame = ({ fileUrl, width, height, aspectRatio }: FrameProps) => {
 
   const newOnUserMedia = useCallback(() => {
     onUserMedia();
-    detectFaces(facingMode === "user", false);
+    detectFaces(facingMode === "user", true);
   }, [onUserMedia, detectFaces, facingMode]);
 
   const onClick = useCallback(() => {

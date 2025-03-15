@@ -91,7 +91,7 @@ declare global {
     totalFrames: number;
   }
 
-  type FileType = "png" | "gif" | "face";
+  type FileType = "png" | "gif" | "face" | "faceDesktop";
 
   type CameraFacingMode = "user" | "environment"
 }
