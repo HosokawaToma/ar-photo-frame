@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import Camera from "@/components/ui/Camera";
 import Canvas from "@/components/ui/Canvas";
@@ -6,7 +6,6 @@ import CaptureButton from "@/components/ui/CaptureButton";
 import ProgressIndicator from "@/components/ui/ProgressIndicator";
 import ShutterFadeIn from "@/components/ui/ShutterFadeIn";
 import CameraToggleFacingButton from "@/components/ui/CameraToggleFacingButton";
-import EncodeModeToggleSwitch from "@/components/ui/EncodeModeToggleSwitch";
 import useArPhotoFrameContext from "@/hooks/useArPhotoFrameContext";
 import useWebcam from "@/hooks/useWebcam";
 import useGifDecoder from "@/hooks/useGifDecoder";
@@ -16,14 +15,13 @@ import style from "@/styles/page.module.css";
 import useFetchFile from "@/hooks/useFetchFile";
 
 const GifFrame = ({ fileUrl, width, height, aspectRatio }: FrameProps) => {
-  const { setCapturedCanvas, setOverlayGif, setOverlayCanvas } = useArPhotoFrameContext();
+  const { setCapturedCanvas, setOverlayGif } = useArPhotoFrameContext();
   const { webcamRef, facingMode, isCameraReady, onCapture, onUserMedia, toggleFacingMode } =
     useWebcam();
   const { file } = useFetchFile(fileUrl);
   const { gif } = useGifDecoder(file);
   const { canvasRef, onMount, animateStop } = useGifAnimator(gif);
   const { isShutterActive, triggerShutter } = useShutterEffect();
-  const [fileEncodeMode, setFileEncodeMode] = useState<FileType>("png");
   const router = useRouter();
 
   useEffect(() => {
@@ -35,14 +33,8 @@ const GifFrame = ({ fileUrl, width, height, aspectRatio }: FrameProps) => {
     animateStop();
     triggerShutter();
     setCapturedCanvas(onCapture());
-    if (fileEncodeMode === "png") {
-      setOverlayCanvas(canvasRef.current);
-      router.push("/savePNG");
-    }
-    if (fileEncodeMode === "gif") {
-      setOverlayGif(gif);
-      router.push("/saveGIF");
-    }
+    setOverlayGif(gif);
+    router.push("/saveGIF");
   }, [
     onCapture,
     router,
@@ -51,9 +43,6 @@ const GifFrame = ({ fileUrl, width, height, aspectRatio }: FrameProps) => {
     animateStop,
     setOverlayGif,
     gif,
-    setOverlayCanvas,
-    canvasRef,
-    fileEncodeMode,
   ]);
 
   return (
@@ -87,11 +76,6 @@ const GifFrame = ({ fileUrl, width, height, aspectRatio }: FrameProps) => {
         </div>
         {file && gif && isCameraReady && (
           <>
-            <EncodeModeToggleSwitch
-              fileEncodeMode={fileEncodeMode}
-              setFileEncodeMode={setFileEncodeMode}
-              className={style["encode-mode-toggle-switch"]}
-            />
             <CaptureButton onClick={onClick} className={style["capture-button"]} />
             <CameraToggleFacingButton
               onClick={toggleFacingMode}
