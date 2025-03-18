@@ -16,9 +16,9 @@ const ArPhotoFramePage = ({ fileUrl, width, height, aspectRatio, type }: ArPhoto
 export async function getStaticPaths() {
   return {
     paths: imagesData.map((imageData) => ({
-      params: { id: imageData.id }
+      params: { id: imageData.id },
     })),
-    fallback: 'blocking',
+    fallback: "blocking",
   };
 }
 
@@ -26,10 +26,16 @@ export const getStaticProps = async ({ params }: { params: { id: string } }) => 
   if (!params?.id) return { notFound: true };
 
   const imageData = imagesData.find((image) => image.id === params.id);
-  if (!imageData) return { notFound: true }
+  if (!imageData) return { notFound: true };
 
   return {
-    props: { fileUrl: imageData.fileUrl, width: imageData.width, height: imageData.height, aspectRatio: imageData.aspectRatio, type: imageData.type },
+    props: {
+      fileUrl: imageData.fileUrl,
+      width: imageData.width,
+      height: imageData.height,
+      aspectRatio: imageData.aspectRatio,
+      type: imageData.type,
+    },
     revalidate: 3600,
   };
 };

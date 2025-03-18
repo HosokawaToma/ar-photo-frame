@@ -33,6 +33,9 @@ export const preparingFaceDetection = (
   return { video, context, canvas, image };
 };
 
+let lastDetectionTime = 0;
+const detectionInterval = 100; // 100msごとに処理
+
 export const drawDetections = async (
   video: HTMLVideoElement,
   context: CanvasRenderingContext2D,
@@ -40,6 +43,22 @@ export const drawDetections = async (
   image: HTMLImageElement,
   mirrored: boolean
 ) => {
+  if (image.width === 0 || image.height === 0) {
+    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
+    return;
+  }
+  if (video.videoWidth === 0 || video.videoHeight === 0) {
+    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
+    return;
+  }
+
+  const now = performance.now();
+  if (now - lastDetectionTime < detectionInterval) {
+    requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
+    return;
+  }
+  lastDetectionTime = now;
+
   const detections = await faceapi.detectAllFaces(video, faceDetectorOptions);
 
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -56,4 +75,6 @@ export const drawDetections = async (
       context.drawImage(image, overlayX, overlayY, overlaySize, overlaySize);
     });
   }
+
+  requestAnimationFrame(() => drawDetections(video, context, canvas, image, mirrored));
 };
