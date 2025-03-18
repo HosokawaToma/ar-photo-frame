@@ -64,7 +64,9 @@ const GifFrame = ({ fileUrl, width, height, aspectRatio }: FrameProps) => {
       <ProgressIndicator isLoading={file && !gif} className={style["progress-indicator"]}>
         GIFをデコード中...
       </ProgressIndicator>
-      <ProgressIndicator isLoading={gif && !isCameraReady} className={style["progress-indicator"]}>
+      <ProgressIndicator
+        isLoading={file && gif && !isCameraReady}
+        className={style["progress-indicator"]}>
         カメラを検索中...
       </ProgressIndicator>
       <div className={style["container"]}>
@@ -75,14 +77,15 @@ const GifFrame = ({ fileUrl, width, height, aspectRatio }: FrameProps) => {
             height={height}
             aspectRatio={aspectRatio}
             facingMode={facingMode}
-            isCameraReady={isCameraReady}
+            isCameraReady={file && gif && isCameraReady}
             onUserMedia={onUserMedia}
+            className={style["camera"]}
           />
-          {isCameraReady && (
+          {file && gif && isCameraReady && (
             <Canvas canvasRef={canvasRef} onMount={onMount} className={style["overlay-canvas"]} />
           )}
         </div>
-        {isCameraReady && (
+        {file && gif && isCameraReady && (
           <>
             <EncodeModeToggleSwitch
               fileEncodeMode={fileEncodeMode}

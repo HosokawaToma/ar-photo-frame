@@ -21,7 +21,7 @@ const SaveImage = () => {
       <div className={style.container}>
         {combineGif && (
           <>
-            <Canvas canvasRef={canvasRef} onMount={onMount} />
+            <Canvas canvasRef={canvasRef} onMount={onMount} className={style["canvas"]} />
             <ProgressIndicator isLoading={!blob} className={style["mini-spinner"]}>
               GIFにエンコード中...
             </ProgressIndicator>
