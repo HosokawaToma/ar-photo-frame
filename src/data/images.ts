@@ -120,4 +120,12 @@ export const imagesData = [
     aspectRatio: 4 / 3,
     type: "gif",
   },
+  {
+    id: "shakaijin_from_spring",
+    fileUrl: "/images/shakaijin_from_spring.png",
+    width: 1280,
+    height: 960,
+    aspectRatio: 4 / 3,
+    type: "face",
+  },
 ];
