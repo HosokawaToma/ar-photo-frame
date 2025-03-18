@@ -114,7 +114,7 @@ export const imagesData = [
   },
   {
     id: "vtuber",
-    fileUrl: "https://d3ebzsyq2w7mpl.cloudfront.net/Vtuberb.gif",
+    fileUrl: "/images/Vtuberb.gif",
     width: 1280,
     height: 960,
     aspectRatio: 4 / 3,
