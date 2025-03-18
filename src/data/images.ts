@@ -69,7 +69,7 @@ export const imagesData = [
     fileUrl: "/images/signboard_entrance_ceremony.png",
     width: 1280,
     height: 960,
-    aspectRatio: 1280 / 739,
+    aspectRatio: 4/3,
     type: "png",
   },
   {
@@ -77,7 +77,7 @@ export const imagesData = [
     fileUrl: "/images/signboard_graduation_ceremony.png",
     width: 1280,
     height: 960,
-    aspectRatio: 1280 / 739,
+    aspectRatio: 4/3,
     type: "png",
   },
   {
@@ -85,7 +85,7 @@ export const imagesData = [
     fileUrl: "/images/degree_entry_ceremony.png",
     width: 1280,
     height: 960,
-    aspectRatio: 1280 / 739,
+    aspectRatio: 4/3,
     type: "png",
   },
   {
@@ -93,7 +93,15 @@ export const imagesData = [
     fileUrl: "/images/magazine_style.png",
     width: 1280,
     height: 960,
-    aspectRatio: 1280 / 739,
+    aspectRatio: 4/3,
+    type: "png",
+  },
+  {
+    id: "graduation_with_diploma",
+    fileUrl: "/images/graduation_with_diploma.png",
+    width: 1280,
+    height: 960,
+    aspectRatio: 4/3,
     type: "png",
   },
 ];
