@@ -158,6 +158,6 @@ export const imagesData = [
     width: 1280,
     height: 960,
     aspectRatio: 4 / 3,
-    type: "fig",
+    type: "gif",
   },
 ];
