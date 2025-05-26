@@ -144,4 +144,20 @@ export const imagesData = [
     aspectRatio: 4 / 3,
     type: "png",
   },
+  {
+    id: "open_campus_waraiotoko",
+    fileUrl: "/images/open_campus_waraiotoko.png",
+    width: 1280,
+    height: 960,
+    aspectRatio: 4 / 3,
+    type: "face",
+  },
+  {
+    id: "open_campus_vtuber",
+    fileUrl: "/images/open_campus_vtuber.gif",
+    width: 1280,
+    height: 960,
+    aspectRatio: 4 / 3,
+    type: "fig",
+  },
 ];
